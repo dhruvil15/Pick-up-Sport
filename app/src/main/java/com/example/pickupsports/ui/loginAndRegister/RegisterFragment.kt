@@ -1,26 +1,17 @@
-package com.example.pickupsports.ui.login
+package com.example.pickupsports.ui.loginAndRegister
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
-
+import androidx.navigation.fragment.findNavController
 import com.example.pickupsports.R
+
 import com.example.pickupsports.databinding.FragmentRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 
 class RegisterFragment : Fragment() {
     private var TAG: String = "Register"
@@ -40,7 +31,7 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -51,10 +42,10 @@ class RegisterFragment : Fragment() {
 
         val usernameEditText = binding.username
         val passwordEditText = binding.password
-        val loginButton = binding.register
+        val registerButton = binding.register
 
 
-        loginButton.setOnClickListener {
+        registerButton.setOnClickListener {
             Log.d(TAG, "Vro")
             auth.createUserWithEmailAndPassword(
                 usernameEditText.text.toString(),
@@ -63,7 +54,7 @@ class RegisterFragment : Fragment() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
-                    val user = auth.currentUser
+                    findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
