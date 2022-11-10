@@ -52,14 +52,14 @@ class RegisterFragment : Fragment() {
                 passwordEditText.text.toString()
             ).addOnCompleteListener() { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
+                    // Register success
                     Log.d(TAG, "createUserWithEmail:success")
                     findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                 } else {
-                    // If sign in fails, display a message to the user.
+                    // If register fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(
-                        activity, "Authentication failed.",
+                        activity, "Registration failed.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
