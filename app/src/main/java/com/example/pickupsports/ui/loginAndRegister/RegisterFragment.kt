@@ -126,8 +126,6 @@ class RegisterFragment : Fragment() {
                 }
             }
         }
-
-
     }
 
     override fun onDestroyView() {
@@ -167,15 +165,6 @@ class RegisterFragment : Fragment() {
         val user = UserData(phoneNumber, firstName, lastName, dob)
         val userID = auth.currentUser?.uid
         userID?.let { database.child("users").child(it) }?.setValue(user)
-
     }
-
-
-/*    val usernameEditText = binding.username
-    val passwordEditText = binding.password
-    val registerButton = binding.register
-    val phoneButton = binding.phoneNumber
-    val dob = binding.dateOfBirth
-    val fullName = binding.name*/
 
 }
