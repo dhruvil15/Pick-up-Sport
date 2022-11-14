@@ -110,4 +110,7 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="event_fragment_label">event_fragment_label</string>
+    <string name="create_event_fragment_label">create_event_fragment_label</string>
+    <string name="home_fragment_label">home_fragment_label</string>
 </resources>

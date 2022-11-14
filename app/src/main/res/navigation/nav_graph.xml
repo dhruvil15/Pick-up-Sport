@@ -5,11 +5,29 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
+    <!--Home view event list-->
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/HomeFragment"
         android:name="com.example.pickupsports.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first"/>
+        android:label="@string/home_fragment_label"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_HomeFragment_to_CreateEventFragment"
+            app:destination="@id/CreateEvent" />
+
+    </fragment>
+
+    <!--    create event-->
+    <fragment
+        android:id="@+id/CreateEvent"
+        android:name="com.example.pickupsports.CreateEvent"
+        android:label="@string/create_event_fragment_label"
+        tools:layout="@layout/fragment_create_event">
+        <action
+            android:id="@+id/action_CreateEventFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.pickupsports.ui.loginAndRegister.RegisterFragment"
@@ -31,7 +49,7 @@
             app:destination="@id/registerFragment" />
         <action
             android:id="@+id/action_loginFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment"
+            app:destination="@id/HomeFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"/>
     </fragment>

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pickupsports.R
 import com.example.pickupsports.databinding.FragmentFirstBinding
 import com.example.pickupsports.persistence.EventsRecyclerViewAdapter
 import com.example.pickupsports.persistence.EventsStorage
@@ -37,8 +36,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.addEvensButton.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        binding.addEventButton.setOnClickListener {
+            findNavController().navigate(R.id.action_HomeFragment_to_CreateEventFragment)
         }
 
         val recylerView : RecyclerView = view.findViewById(R.id.eventRV)
