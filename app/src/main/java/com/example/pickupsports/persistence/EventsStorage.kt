@@ -1,14 +1,15 @@
 package com.example.pickupsports.persistence
 
-import com.example.pickupsports.model.Note
+import com.example.pickupsports.model.Event
 
-object NotesStorage {
+// TODO: complete the event
+object EventsStorage {
 
-    val notes = ArrayList<Note>()
+    val events = ArrayList<Event>()
 
     init {
         for (i in 1..2){
-            notes.add(Note("Note #$i", "Body #$i"))
+            events.add(Event("Event #$i", "Body #$i"))
         }
     }
 }
