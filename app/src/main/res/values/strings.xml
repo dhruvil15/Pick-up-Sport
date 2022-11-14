@@ -22,4 +22,6 @@
     <string name="dob">Birthday</string>
     <string name="nameHint">Full Name</string>
     <string name="phoneHint">Phone Number</string>
+    <string name="app_title">Pickup Sports</string>
+    <string name="app_logo">App Logo</string>
 </resources>

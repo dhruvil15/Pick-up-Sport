@@ -61,6 +61,7 @@ class RegisterFragment : Fragment() {
         fullName = binding.name
 
         val registerButton = binding.register
+        val loginButton = binding.backToLogin
 
         //https://www.geeksforgeeks.org/how-to-popup-datepicker-while-clicking-on-edittext-in-android/
         dob.setOnClickListener {
@@ -126,6 +127,12 @@ class RegisterFragment : Fragment() {
                 }
             }
         }
+
+        loginButton.setOnClickListener {
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+        }
+
+
     }
 
     override fun onDestroyView() {
