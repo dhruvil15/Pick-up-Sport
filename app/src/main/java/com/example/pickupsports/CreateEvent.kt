@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.navigation.fragment.findNavController
-import com.example.pickupsports.databinding.FragmentSecondBinding
+import com.example.pickupsports.databinding.FragmentCreateEventBinding
 import com.example.pickupsports.model.Event
 import com.example.pickupsports.persistence.EventsStorage
 
@@ -16,7 +16,7 @@ import com.example.pickupsports.persistence.EventsStorage
  */
 class CreateEvent : Fragment() {
 
-    private var _binding: FragmentSecondBinding? = null
+    private var _binding: FragmentCreateEventBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -27,7 +27,7 @@ class CreateEvent : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateEventBinding.inflate(inflater, container, false)
         return binding.root
 
     }

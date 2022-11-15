@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pickupsports.databinding.FragmentFirstBinding
+import com.example.pickupsports.databinding.FragmentHomeBinding
 import com.example.pickupsports.persistence.EventsRecyclerViewAdapter
 import com.example.pickupsports.persistence.EventsStorage
 
@@ -17,7 +17,7 @@ import com.example.pickupsports.persistence.EventsStorage
  */
 class HomeFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentHomeBinding? = null;
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -28,7 +28,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
 
     }

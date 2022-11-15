@@ -48,7 +48,7 @@
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_FirstFragment"
+            android:id="@+id/action_loginFragment_to_HomeFragment"
             app:destination="@id/HomeFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"/>
