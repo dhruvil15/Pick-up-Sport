@@ -1,6 +1,7 @@
 package com.example.pickupsports
 
 import android.os.Bundle
+import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -18,20 +19,21 @@ class MainActivty : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainActivtyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-        val navController = findNavController(R.id.nav_host_fragment_content_main_activty)
 
+        val navController = findNavController(R.id.nav_host_fragment_content_main_activty)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-        //Skip login if user already signed in
+// demo fab, currently useless
+//        binding.fab.setOnClickListener { view ->
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show()
+//        }
         auth = FirebaseAuth.getInstance()
-        if(auth.currentUser != null) {
-            navController.navigate(R.id.action_loginFragment_to_FirstFragment)
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
