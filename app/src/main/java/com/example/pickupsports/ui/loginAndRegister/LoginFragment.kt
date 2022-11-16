@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 
@@ -17,6 +18,9 @@ class LoginFragment : Fragment() {
     private var TAG: String = "Login"
     private var _binding: FragmentLoginBinding? = null
     private lateinit var auth: FirebaseAuth
+
+    private lateinit var usernameEditText: EditText
+    private lateinit var passwordEditText: EditText
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -40,17 +44,18 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val usernameEditText = binding.username
-        val passwordEditText = binding.password
+        usernameEditText = binding.username
+        passwordEditText = binding.password
         val loginButton = binding.login
         val registerButton = binding.createAccount
 
 
         loginButton.setOnClickListener {
-            auth.signInWithEmailAndPassword(
-                usernameEditText.text.toString(),
-                passwordEditText.text.toString()
-            ).addOnCompleteListener { task ->
+            if(validateFields()) {
+                auth.signInWithEmailAndPassword(
+                    usernameEditText.text.toString(),
+                    passwordEditText.text.toString()
+                ).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success")
@@ -58,11 +63,14 @@ class LoginFragment : Fragment() {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.exception)
-                        Toast.makeText(context, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context, "Authentication failed.",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
                     }
                 }
+            }
         }
 
         registerButton.setOnClickListener {
@@ -73,5 +81,18 @@ class LoginFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun validateFields(): Boolean {
+        var validated = true
+        if(usernameEditText.length() == 0) {
+            usernameEditText.error = "Enter email address"
+            validated = false
+        }
+        if(passwordEditText.length() == 0) {
+            passwordEditText.error = "Enter password"
+            validated = false
+        }
+        return validated
     }
 }
