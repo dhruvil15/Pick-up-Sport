@@ -5,6 +5,7 @@
     <string name="prompt_password">Password</string>
     <string name="action_register">Register</string>
     <string name="action_sign_in">Sign in</string>
+    <string name="action_edit_profile">Edit</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
@@ -23,6 +24,7 @@
     <string name="nameHint">Full Name</string>
     <string name="phoneHint">Phone Number</string>
     <string name="app_title">Pickup Sports</string>
+    <string name="profile_title">My Profile</string>
     <string name="app_logo">App Logo</string>
 
     <string name="large_text">
@@ -117,5 +119,11 @@
     <string name="event_fragment_label">event_fragment_label</string>
     <string name="create_event_fragment_label">create_event_fragment_label</string>
     <string name="home_fragment_label">home_fragment_label</string>
+    <string name="phone_number">Phone number</string>
+    <string name="full_name">Full name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="save">Save</string>
+    <string name="edit_profile">Edit Profile</string>
 
 </resources>
