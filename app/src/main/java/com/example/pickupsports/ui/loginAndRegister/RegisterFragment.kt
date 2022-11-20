@@ -30,6 +30,7 @@ class RegisterFragment : Fragment() {
     private lateinit var phoneButton: EditText
     private lateinit var dob: EditText
     private lateinit var fullName: EditText
+    private lateinit var username: EditText
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -59,6 +60,7 @@ class RegisterFragment : Fragment() {
         phoneButton = binding.phoneNumber
         dob = binding.dateOfBirth
         fullName = binding.name
+        username = binding.usernameField
 
         val registerButton = binding.register
         val loginButton = binding.backToLogin
@@ -111,7 +113,8 @@ class RegisterFragment : Fragment() {
                         uploadUserData(
                             fullName.text.toString(),
                             phoneButton.text.toString(),
-                            dob.text.toString()
+                            dob.text.toString(),
+                            username.text.toString()
                         )
                         // Register success
                         Log.d(TAG, "createUserWithEmail:success")
@@ -162,14 +165,18 @@ class RegisterFragment : Fragment() {
             dob.error = "Field is required"
             validated = false
         }
+        if(username.length() == 0) {
+            username.error = "Field is required"
+            validated = false
+        }
         return validated
     }
 
-    fun uploadUserData(fullName: String, phoneNumber: String, dob: String) {
+    fun uploadUserData(fullName: String, phoneNumber: String, dob: String, username: String) {
         val firstName: String = fullName.split(" ")[0]
         val lastName: String = fullName.split(" ")[1]
 
-        val user = UserData(phoneNumber, firstName, lastName, dob)
+        val user = UserData(phoneNumber, firstName, lastName, dob, username)
         val userID = auth.currentUser?.uid
         userID?.let { database.child("users").child(it) }?.setValue(user)
     }

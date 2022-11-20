@@ -117,5 +117,6 @@
     <string name="event_fragment_label">event_fragment_label</string>
     <string name="create_event_fragment_label">create_event_fragment_label</string>
     <string name="home_fragment_label">home_fragment_label</string>
+    <string name="username_hint">Username</string>
 
 </resources>
