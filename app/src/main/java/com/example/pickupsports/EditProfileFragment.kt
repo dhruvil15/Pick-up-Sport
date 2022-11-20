@@ -64,7 +64,7 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        usernameEditText = binding.username
+        usernameEditText = binding.email
         passwordEditText = binding.password
         phoneButton = binding.phoneNumber
         dob = binding.dateOfBirth
