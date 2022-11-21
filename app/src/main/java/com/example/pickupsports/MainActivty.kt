@@ -1,8 +1,9 @@
 package com.example.pickupsports
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -23,8 +24,6 @@ class MainActivty : AppCompatActivity() {
         binding = ActivityMainActivtyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-
         val navController = findNavController(R.id.nav_host_fragment_content_main_activty)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -34,11 +33,38 @@ class MainActivty : AppCompatActivity() {
 //                .setAction("Action", null).show()
 //        }
         auth = FirebaseAuth.getInstance()
+
+        replaceFragment(HomeFragment())
+
+        binding.bottomNavigationView.setOnItemSelectedListener {
+
+            when(it.itemId){
+                R.id.home -> replaceFragment(HomeFragment())
+                R.id.message -> replaceFragment(Message())
+                R.id.create -> replaceFragment(CreateEvent())
+                R.id.upcoming -> replaceFragment(upcoming())
+                R.id.acc -> replaceFragment(profile())
+
+                else->{
+
+                }
+            }
+
+            true
+        }
+
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main_activty)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    private fun replaceFragment(fragment: Fragment){
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.include,fragment)
     }
 }
