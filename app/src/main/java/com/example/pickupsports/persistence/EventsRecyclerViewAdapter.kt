@@ -13,7 +13,7 @@ class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapt
 
     inner class EventListItem(eventListItemView : View?) : RecyclerView.ViewHolder(eventListItemView!!){
         val eventTitleText : TextView? = eventListItemView?.findViewById(R.id.eventTitle)
-        val eventBodyText : TextView? = eventListItemView?.findViewById(R.id.eventBody)
+        val eventBodyText : TextView? = eventListItemView?.findViewById(R.id.eventDate)
         var eventPosition = 0
     }
 
