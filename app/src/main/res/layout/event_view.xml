@@ -28,19 +28,20 @@
                 app:layout_constraintHorizontal_bias="0.045"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="1.0" />
 
             <ImageView
                 android:id="@+id/sportIcon"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:rotation="-45"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.045"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.628"
-                tools:srcCompat="@tools:sample/avatars" />
+                app:srcCompat="@drawable/tennis_icon" />
 
             <View
                 android:id="@+id/divider2"
@@ -53,13 +54,13 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/sportIcon"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.08" />
+                app:layout_constraintVertical_bias="0.64" />
 
             <TextView
                 android:id="@+id/eventTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:text="MM:HH"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.049"
@@ -71,7 +72,7 @@
                 android:id="@+id/eventDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:text="DD/MM"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.068"
@@ -85,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="4dp"
-                android:text="TextView"
+                android:text="Location: Stadium 1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.004"
@@ -97,7 +98,7 @@
                 android:id="@+id/numberOfPlayer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:text="5/10"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.049"
@@ -109,26 +110,26 @@
                 android:id="@+id/levelOfPlay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:text="Lv: Pro"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.31"
+                app:layout_constraintEnd_toStartOf="@+id/rightArrow"
+                app:layout_constraintHorizontal_bias="0.627"
                 app:layout_constraintStart_toEndOf="@+id/eventDate"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.2" />
+                app:layout_constraintVertical_bias="0.196" />
 
             <ImageView
                 android:id="@+id/rightArrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:rotation="-90"
+                android:rotation="0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.825"
+                app:layout_constraintHorizontal_bias="0.914"
                 app:layout_constraintStart_toEndOf="@+id/eventLocation"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.506"
-                app:srcCompat="@drawable/fui_ic_mail_white_24dp" />
+                app:layout_constraintVertical_bias="0.491"
+                app:srcCompat="@drawable/enter_icon_arrow" />
 
             <View
                 android:id="@+id/divider5"

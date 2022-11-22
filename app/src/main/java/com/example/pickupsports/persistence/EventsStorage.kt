@@ -2,7 +2,9 @@ package com.example.pickupsports.persistence
 
 import com.example.pickupsports.model.Event
 
-// TODO: complete the event
+/**
+ * Retrieve event data from db and store them into the [events] ArrayList
+ */
 object EventsStorage {
 
     val events = ArrayList<Event>()
