@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_CreateEventFragment_to_HomeFragment"
             app:destination="@id/HomeFragment" />
+        <action
+            android:id="@+id/action_CreateEvent_to_summaryFragment"
+            app:destination="@id/SummaryFragment" />
     </fragment>
 
     <fragment
@@ -53,4 +56,9 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"/>
     </fragment>
+    <fragment
+        android:id="@+id/SummaryFragment"
+        android:name="com.example.pickupsports.SummaryFragment"
+        android:label="fragment_summary"
+        tools:layout="@layout/fragment_summary" />
 </navigation>
