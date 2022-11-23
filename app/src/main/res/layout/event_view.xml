@@ -7,9 +7,12 @@
     android:layout_marginVertical="5dp">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/eventCard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardBackgroundColor="#F3F3F3">
+        app:cardBackgroundColor="#F3F3F3"
+        android:foreground="?selectableItemBackground"
+        android:clickable="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
