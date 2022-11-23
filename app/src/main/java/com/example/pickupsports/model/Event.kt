@@ -15,7 +15,6 @@ class Event (
     val capacity: Int? = null,
     val levelOfPlay: String? = null,
     val notice: String? = null,
-    val participants: Array<UserData>? = null
 ) {
 
 }

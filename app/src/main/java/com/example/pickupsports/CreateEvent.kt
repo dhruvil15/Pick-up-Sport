@@ -245,12 +245,8 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                 )
 
 
-                val eventID = sportName + ("_") +
-                date + ("_") +
-                owner.firstName.toString() + ("-") +
-                owner.lastName.toString()
+                val eventID = database.child("events").push().key;
 
-                val participants = Array<UserData>(5){owner}
                 val event = Event(
                     owner,
                     eventID,
@@ -261,9 +257,13 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                     capacity,
                     levelOfPlay,
                     notice,
-                    participants
                 )
-                database.child("events").child(eventID).setValue(event)
+
+                if (eventID != null) {
+                    database.child("events").child(eventID).setValue(event)
+                    database.child("participants").child(eventID).child(userID).setValue(owner)
+                }
+
             }
         }
 
