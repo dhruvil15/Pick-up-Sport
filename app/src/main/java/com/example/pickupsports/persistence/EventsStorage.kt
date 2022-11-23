@@ -10,7 +10,7 @@ object EventsStorage {
     val events = ArrayList<Event>()
 
     init {
-        for (i in 1..2){
+        for (i in 0 until events.size){
             events.add(Event("Event #$i", "Body #$i"))
         }
     }
