@@ -321,6 +321,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/create_input_notice"
             android:hint="@string/create_notice_hint"
             android:textAlignment="viewStart" />
     </com.google.android.material.textfield.TextInputLayout>

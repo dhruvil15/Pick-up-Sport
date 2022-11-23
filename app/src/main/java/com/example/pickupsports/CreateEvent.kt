@@ -1,10 +1,9 @@
 package com.example.pickupsports
 
 import android.app.DatePickerDialog
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,17 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
-import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.pickupsports.databinding.FragmentCreateEventBinding
 import com.example.pickupsports.model.Event
-import com.example.pickupsports.persistence.EventsStorage
+import com.example.pickupsports.model.UserData
+import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import java.io.IOException
 import java.util.*
 
 /**
@@ -32,6 +37,14 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
 
     private lateinit var vacancyFrameInput: EditText
     private lateinit var totalNumberFrameInput: EditText
+    private lateinit var levelOfPlay: String
+
+    private lateinit var database: DatabaseReference
+
+    private lateinit var mGeocoder : Geocoder
+    private lateinit var addressList: List<Address>
+
+    private lateinit var auth: FirebaseAuth
 
 
     override fun onCreateView(
@@ -41,6 +54,8 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
     ): View? {
 
         _binding = FragmentCreateEventBinding.inflate(inflater, container, false)
+        auth = FirebaseAuth.getInstance()
+        database = Firebase.database.reference
         return binding.root
 
     }
@@ -50,10 +65,11 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
 
         vacancyFrameInput = binding.createFrameInput
         totalNumberFrameInput = binding.createFrameInput2
+        mGeocoder = Geocoder(this.context)
 
-        //vacancyFrameInput.setText(value)
         /*
         * dropdown menu
+        * https://developer.android.com/develop/ui/views/components/spinner
         * */
         val spinner: Spinner = view.findViewById(R.id.create_level_play)
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -68,10 +84,6 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
             spinner.adapter = adapter
         }
         spinner.onItemSelectedListener = this
-
-        binding.createCancelBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_CreateEventFragment_to_HomeFragment)
-        }
 
         //https://www.geeksforgeeks.org/how-to-popup-datepicker-while-clicking-on-edittext-in-android/
         binding.createInputDate.setOnClickListener {
@@ -116,16 +128,49 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         binding.createAddBtn2.setOnClickListener{addClick(2)}
         binding.createMinusBtn2.setOnClickListener{minusClick(2)}
 
+        binding.createCancelBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_CreateEventFragment_to_HomeFragment)
+        }
+
+        binding.createSaveBtn.setOnClickListener {
+
+            /*https://www.javatpoint.com/android-google-map-search-location-using-geocodr*/
+            val location = binding.createInputLocation.text.toString()
+
+            try {
+                addressList = mGeocoder.getFromLocationName(location.toString(), 1)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+            val address = addressList[0]
+            val latlng : LatLng = LatLng(address.latitude, address.longitude)
+            val date = binding.createInputDate.text.toString()
+            val sportName = binding.createInputSportName.text.toString()
+            val capacity = binding.createFrameInput.text.toString().toInt()
+            val notice = binding.createInputNotice.text.toString()
+            uploadEvent(
+                location.toString(),
+                latlng,
+                date,
+                sportName,
+                capacity,
+                levelOfPlay,
+                notice
+            )
+
+        }
 
     }
 
+    //https://developer.android.com/develop/ui/views/components/spinner
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
         // An item was selected. You can retrieve the selected item using
-        val levelOfPlay =  parent.getItemAtPosition(pos)
+        levelOfPlay =  parent.getItemAtPosition(pos).toString()
     }
-
+    //https://developer.android.com/develop/ui/views/components/spinner
     override fun onNothingSelected(parent: AdapterView<*>) {
-        val levelOfPlay = "Any"
+        levelOfPlay = "Any"
     }
 
     /*The click function when add button clicked*/
@@ -177,9 +222,58 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
 
     }
 
+    private fun uploadEvent(
+        location_text: String,
+        location: LatLng,
+        date: String,
+        sportName: String,
+        capacity: Int,
+        levelOfPlay: String,
+        notice : String
+    ) {
+
+
+        val userID = auth.currentUser?.uid
+        val user = userID?.let { it ->
+            database.child("users").child(it).get().addOnSuccessListener {
+
+                val owner  = UserData(
+                    it.child("phoneNumber").value.toString(),
+                    it.child("firstName").value.toString(),
+                    it.child("lastName").value.toString(),
+                    it.child("dob").value.toString()
+                )
+
+
+                val eventID = sportName + ("_") +
+                date + ("_") +
+                owner.firstName.toString() + ("-") +
+                owner.lastName.toString()
+
+                val participants = Array<UserData>(5){owner}
+                val event = Event(
+                    owner,
+                    eventID,
+                    location_text,
+                    location,
+                    date,
+                    sportName,
+                    capacity,
+                    levelOfPlay,
+                    notice,
+                    participants
+                )
+                database.child("events").child(eventID).setValue(event)
+            }
+        }
+
+
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
 }
+
