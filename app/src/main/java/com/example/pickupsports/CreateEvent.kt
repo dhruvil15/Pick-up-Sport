@@ -1,6 +1,9 @@
 package com.example.pickupsports
 
+import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +12,12 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import com.example.pickupsports.databinding.FragmentCreateEventBinding
 import com.example.pickupsports.model.Event
 import com.example.pickupsports.persistence.EventsStorage
+import java.util.*
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -25,8 +30,13 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var vacancyFrameInput: EditText
+    private lateinit var totalNumberFrameInput: EditText
+
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
@@ -38,6 +48,13 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        vacancyFrameInput = binding.createFrameInput
+        totalNumberFrameInput = binding.createFrameInput2
+
+        //vacancyFrameInput.setText(value)
+        /*
+        * dropdown menu
+        * */
         val spinner: Spinner = view.findViewById(R.id.create_level_play)
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
@@ -50,8 +67,54 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
             // Apply the adapter to the spinner
             spinner.adapter = adapter
         }
-
         spinner.onItemSelectedListener = this
+
+        binding.createCancelBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_CreateEventFragment_to_HomeFragment)
+        }
+
+        //https://www.geeksforgeeks.org/how-to-popup-datepicker-while-clicking-on-edittext-in-android/
+        binding.createInputDate.setOnClickListener {
+
+            // on below line we are getting
+            // the instance of our calendar.
+            val c = Calendar.getInstance()
+
+            // on below line we are getting
+            // our day, month and year.
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+
+            // on below line we are creating a
+            // variable for date picker dialog.
+            val datePickerDialog = DatePickerDialog(
+                // on below line we are passing context.
+                requireContext(),
+                { _, birthYear, monthOfYear, dayOfMonth ->
+                    // on below line we are setting
+                    // date to our edit text.
+                    val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + birthYear)
+                    binding.createInputDate.setText(dat)
+                },
+                // on below line we are passing year, month
+                // and day for the selected date in our date picker.
+                year,
+                month,
+                day
+            )
+            // at last we are calling show
+            // to display our date picker dialog.
+            datePickerDialog.show()
+        }
+
+        /*
+        * Add & minus button click function
+        * */
+        binding.createAddBtn.setOnClickListener{addClick(1)}
+        binding.createMinusBtn.setOnClickListener{minusClick(1)}
+        binding.createAddBtn2.setOnClickListener{addClick(2)}
+        binding.createMinusBtn2.setOnClickListener{minusClick(2)}
 
 
     }
@@ -63,6 +126,55 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
 
     override fun onNothingSelected(parent: AdapterView<*>) {
         val levelOfPlay = "Any"
+    }
+
+    /*The click function when add button clicked*/
+    private fun addClick(fram_num: Int){
+
+        if (fram_num == 1){
+
+            val value : Int = vacancyFrameInput.text.toString().toInt() + 1
+
+            vacancyFrameInput.setText(value.toString())
+
+        }else{
+
+            val value : Int = totalNumberFrameInput.text.toString().toInt() + 1
+
+            totalNumberFrameInput.setText(value.toString())
+
+        }
+
+    }
+
+    /*The click function when minus button clicked*/
+    private fun minusClick(fram_num: Int){
+
+        if (fram_num == 1){
+
+            var value : Int = vacancyFrameInput.text.toString().toInt() - 1
+
+            if (value < 0){
+
+                value = 0
+
+            }
+            vacancyFrameInput.setText(value.toString())
+
+        }else{
+
+            var value : Int = totalNumberFrameInput.text.toString().toInt() - 1
+
+            if (value < 0){
+
+                value = 0
+
+            }
+
+            totalNumberFrameInput.setText(value.toString())
+
+        }
+
     }
 
     override fun onDestroyView() {

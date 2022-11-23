@@ -27,13 +27,13 @@
         android:textColor="#656464"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_input_total_number" />
+        app:layout_constraintTop_toBottomOf="@+id/create_frame_input2" />
 
     <TextView
         android:id="@+id/create_title_level"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="288dp"
+        android:layout_marginStart="268dp"
         android:layout_marginTop="16dp"
         android:text="@string/create_title_level"
         android:textColor="#656464"
@@ -41,27 +41,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/create_input_sport_name" />
 
-    <EditText
-        android:id="@+id/create_input_total_number"
-        android:layout_width="114dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="36dp"
-        android:ems="10"
-        android:inputType="number"
-        android:text="1"
-        android:textAlignment="center"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_title_total_number" />
-
     <ImageView
         android:id="@+id/create_minus_btn2"
         android:layout_width="28dp"
         android:layout_height="27dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:background="@mipmap/btn_minus"
-        app:layout_constraintStart_toEndOf="@+id/create_input_total_number"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/create_title_total_number" />
 
     <TextView
@@ -74,14 +61,14 @@
         android:textColor="#656464"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_input_vacancy" />
+        app:layout_constraintTop_toBottomOf="@+id/create_frame_input" />
 
     <ImageView
         android:id="@+id/create_add_btn2"
         android:layout_width="28dp"
         android:layout_height="27dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:background="@mipmap/btn_add"
         app:layout_constraintStart_toEndOf="@+id/create_frame_input2"
         app:layout_constraintTop_toBottomOf="@+id/create_title_total_number" />
@@ -276,35 +263,22 @@
         app:layout_constraintStart_toEndOf="@+id/create_input_date"
         app:layout_constraintTop_toBottomOf="@+id/create_time_hint" />
 
-    <EditText
-        android:id="@+id/create_input_vacancy"
-        android:layout_width="114dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="36dp"
-        android:ems="10"
-        android:inputType="number"
-        android:text="1"
-        android:textAlignment="center"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_title_vacancy" />
-
     <ImageView
         android:id="@+id/create_add_btn"
         android:layout_width="28dp"
         android:layout_height="27dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
         android:background="@mipmap/btn_add"
         app:layout_constraintStart_toEndOf="@+id/create_frame_input"
-        app:layout_constraintTop_toBottomOf="@+id/create_input_sport_name" />
+        app:layout_constraintTop_toBottomOf="@+id/create_title_vacancy" />
 
     <EditText
         android:id="@+id/create_frame_input"
         android:layout_width="39dp"
         android:layout_height="38dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="3dp"
         android:background="@drawable/frame_with_gray_edge_white"
         android:paddingLeft="15dp"
         android:paddingTop="10dp"
@@ -314,24 +288,24 @@
         android:textColor="#000"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/create_minus_btn"
-        app:layout_constraintTop_toBottomOf="@+id/create_input_sport_name" />
+        app:layout_constraintTop_toBottomOf="@+id/create_title_vacancy" />
 
     <ImageView
         android:id="@+id/create_minus_btn"
         android:layout_width="28dp"
         android:layout_height="27dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="12dp"
         android:background="@mipmap/btn_minus"
-        app:layout_constraintStart_toEndOf="@+id/create_input_vacancy"
-        app:layout_constraintTop_toBottomOf="@+id/create_input_sport_name" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_title_vacancy" />
 
     <Spinner
         android:id="@+id/create_level_play"
-        android:layout_width="133dp"
-        android:layout_height="26dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="162dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/create_title_level" />
 
