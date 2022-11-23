@@ -26,12 +26,8 @@ class MainActivty : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_content_main_activty)
         appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-// demo fab, currently useless
-//        binding.fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
-//        }
+//        setupActionBarWithNavController(navController, appBarConfiguration)
+
         auth = FirebaseAuth.getInstance()
 
         replaceFragment(HomeFragment())
