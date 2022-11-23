@@ -1,14 +1,14 @@
 package com.example.pickupsports
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.pickupsports.databinding.ActivityMainActivtyBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivty : AppCompatActivity() {
@@ -26,9 +26,18 @@ class MainActivty : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_content_main_activty)
         appBarConfiguration = AppBarConfiguration(navController.graph)
-//        setupActionBarWithNavController(navController, appBarConfiguration)
 
         auth = FirebaseAuth.getInstance()
+
+//        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+//
+//        navController.addOnDestinationChangedListener { _, destination, _ ->
+//            bottomNavigationView.visibility = if(destination.id == R.id.loginFragment && destination.id == R.id.registerFragment) {
+//                View.GONE
+//            } else {
+//                View.VISIBLE
+//            }
+//        }
 
         replaceFragment(HomeFragment())
 
@@ -62,5 +71,6 @@ class MainActivty : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.include,fragment)
+        fragmentTransaction.commit()
     }
 }
