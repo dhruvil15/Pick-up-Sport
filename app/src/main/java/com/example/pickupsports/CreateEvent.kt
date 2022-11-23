@@ -146,6 +146,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
             val address = addressList[0]
             val latlng : LatLng = LatLng(address.latitude, address.longitude)
             val date = binding.createInputDate.text.toString()
+            val time = binding.createInputTime.text.toString()
             val sportName = binding.createInputSportName.text.toString()
             val capacity = binding.createFrameInput.text.toString().toInt()
             val notice = binding.createInputNotice.text.toString()
@@ -153,6 +154,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                 location.toString(),
                 latlng,
                 date,
+                time,
                 sportName,
                 capacity,
                 levelOfPlay,
@@ -226,6 +228,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         location_text: String,
         location: LatLng,
         date: String,
+        time: String,
         sportName: String,
         capacity: Int,
         levelOfPlay: String,
@@ -253,6 +256,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                     location_text,
                     location,
                     date,
+                    time,
                     sportName,
                     capacity,
                     levelOfPlay,

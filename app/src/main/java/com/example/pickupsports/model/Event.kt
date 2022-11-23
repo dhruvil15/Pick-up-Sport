@@ -10,6 +10,7 @@ class Event (
     val eventId: String? = null,
     val location_text: String? = null,
     val location: LatLng? = null,
+    val time: String? = null,
     val date: String? = null,
     val sportName: String? = null,
     val capacity: Int? = null,
