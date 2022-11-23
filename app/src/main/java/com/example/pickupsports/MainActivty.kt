@@ -29,18 +29,26 @@ class MainActivty : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-//        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-//
-//        navController.addOnDestinationChangedListener { _, destination, _ ->
-//            bottomNavigationView.visibility = if(destination.id == R.id.loginFragment && destination.id == R.id.registerFragment) {
-//                View.GONE
-//            } else {
-//                View.VISIBLE
-//            }
-//        }
 
-        replaceFragment(HomeFragment())
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.loginFragment -> {
+                    bottomNavigationView.visibility = View.GONE
+                }
+                R.id.registerFragment -> {
+                    bottomNavigationView.visibility = View.GONE
+                }
+                else -> {
+                    bottomNavigationView.visibility = View.VISIBLE
+                }
+            }
+        }
+        changeFragmentOnSelect()
+    }
+
+    fun changeFragmentOnSelect(){
         binding.bottomNavigationView.setOnItemSelectedListener {
 
             when(it.itemId){
@@ -57,8 +65,6 @@ class MainActivty : AppCompatActivity() {
 
             true
         }
-
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
