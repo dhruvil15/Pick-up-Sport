@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pickupsports.R
@@ -21,11 +22,6 @@ class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapt
         val eventCard : CardView? = eventListItemView?.findViewById(R.id.eventCard)
         var eventPosition = 0
 
-        // click on event card view: modify event
-//        eventCard.setOnClickListener {
-//            println("test")
-//            // findNavController().navigate(R.id.action_HomeFragment_to_CreateEventFragment)
-//        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventListItem {
@@ -38,8 +34,10 @@ class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapt
         val event : Event = events[position]
         holder.eventTitleText?.text = event.eventTitle
         holder.eventBodyText?.text = event.eventBody
-        holder.itemView.setOnClickListener {
-            println("test")
+
+        // click to modify a selected event
+        holder.eventCard?.setOnClickListener {
+            it.findNavController().navigate(R.id.action_HomeFragment_to_CreateEventFragment)
         }
     }
 
