@@ -16,7 +16,7 @@ import com.example.pickupsports.databinding.FragmentHomeBinding
 import com.example.pickupsports.model.Event
 import com.example.pickupsports.persistence.EventsRecyclerViewAdapter
 import com.example.pickupsports.persistence.EventsStorage
-import com.example.pickupsports.ui.loginAndRegister.UserData
+import com.example.pickupsports.model.UserData
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
@@ -112,10 +112,11 @@ class HomeFragment : Fragment() {
         val date: String? = entry.child("date").value.toString()
         val sportName: String? = entry.child("sportName").value.toString()
         val capacity: Int? = entry.child("capacity").value.toString().toInt()
+        val currPlayer: Int? = entry.child("currentPlayer").value.toString().toInt()
         val levelOfPlay: String? = entry.child("levelOfPlay").value.toString()
         val notice: String? = entry.child("notice").value.toString()
 
-        return Event(owner, eventId, location_text, location, time, date, sportName, capacity, levelOfPlay, notice)
+        return Event(owner, eventId, location_text, location,date, time, sportName, capacity, currPlayer, levelOfPlay, notice)
     }
 
 }

@@ -1,6 +1,5 @@
 package com.example.pickupsports.model
 
-import com.example.pickupsports.ui.loginAndRegister.UserData
 import com.google.android.gms.maps.model.LatLng
 
 /**

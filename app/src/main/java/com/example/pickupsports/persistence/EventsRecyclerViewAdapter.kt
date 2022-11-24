@@ -11,7 +11,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pickupsports.R
 import com.example.pickupsports.model.Event
-import com.example.pickupsports.ui.loginAndRegister.UserData
+import com.example.pickupsports.model.UserData
 import com.firebase.ui.auth.data.model.User
 
 class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapter.EventListItem>() {

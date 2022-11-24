@@ -3,7 +3,6 @@ package com.example.pickupsports.persistence
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.pickupsports.model.Event
-import com.example.pickupsports.ui.loginAndRegister.UserData
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
