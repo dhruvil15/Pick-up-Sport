@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.example.pickupsports.databinding.FragmentCreateEventBinding
 import com.example.pickupsports.model.Event
@@ -38,6 +39,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
     private lateinit var vacancyFrameInput: EditText
     private lateinit var totalNumberFrameInput: EditText
     private lateinit var levelOfPlay: String
+    private lateinit var _eventID: String
 
     private lateinit var database: DatabaseReference
 
@@ -161,6 +163,11 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                 notice
             )
 
+            val result: Bundle = Bundle()
+            result.putString("eventID", _eventID)
+            parentFragment?.setFragmentResult("events", result)
+            findNavController().navigate(R.id.action_CreateEvent_to_summaryFragment)
+
         }
 
     }
@@ -266,6 +273,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                 if (eventID != null) {
                     database.child("events").child(eventID).setValue(event)
                     database.child("participants").child(eventID).child(userID).setValue(owner)
+                    _eventID = eventID
                 }
 
             }
