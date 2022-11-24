@@ -36,9 +36,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.addEventButton.setOnClickListener {
-            findNavController().navigate(R.id.action_HomeFragment_to_CreateEventFragment)
-        }
+//        binding.addEventButton.setOnClickListener {
+//            findNavController().navigate(R.id.action_HomeFragment_to_CreateEventFragment)
+//        }
 
         val recylerView : RecyclerView = view.findViewById(R.id.eventRV)
         recylerView.layoutManager = LinearLayoutManager(activity)
