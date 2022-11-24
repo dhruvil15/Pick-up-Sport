@@ -40,7 +40,7 @@ class CreateEvent : Fragment() {
             val body = view.findViewById<EditText>(R.id.eventAddBody).text
 
             if(title.isNotEmpty() && body.isNotEmpty() ){
-                EventsStorage.events.add(Event(title.toString(),body.toString()))
+                EventsStorage.events.add(Event(null,title.toString(),body.toString()))
             }
 
 

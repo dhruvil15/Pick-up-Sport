@@ -38,17 +38,17 @@ class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapt
 
     override fun onBindViewHolder(holder: EventListItem, position: Int) {
         val event : Event = events[position]
-        holder.eventTitleText?.text = event.eventTitle
+        holder.eventTitleText?.text = event.sportName
         // set event icon accordingly
-        holder.eventIcon?.setImageResource(getIcon("cycling"))
+        holder.eventIcon?.setImageResource(getIcon(event.sportName))
 
         // set time, date, location, availability and level of play
         // TODO: uncomment here when event is implemented
-//        holder.eventTime?.text = event.eventTime
-//        holder.eventDate?.text = event.date
-//        holder.eventLocation?.text = event.location_text
-//        holder.availability?.text = event.participants.size + "/" + event.capacity
-//        holder.levelOfPlay?.text = event.levelOfPlay
+        holder.eventTime?.text = event.time
+        holder.eventDate?.text = event.date
+        holder.eventLocation?.text = event.location_text
+        //holder.availability?.text = event.participants.size + "/" + event.capacity
+        holder.levelOfPlay?.text = event.levelOfPlay
         // click to modify a selected event
         holder.eventCard?.setOnClickListener {
             it.findNavController().navigate(R.id.action_HomeFragment_to_CreateEventFragment)
@@ -69,13 +69,13 @@ class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapt
      * for demo purpose, only 5 events are selectable (and plus one default icon)
      * @return icon
      */
-    fun getIcon(eventName: String): Int {
-        return when (eventName) {
-            "tennis" -> R.drawable.tennis_icon
-            "football" -> R.drawable.football_icon
-            "basketball" -> R.drawable.basketball_icon
-            "cycling" -> R.drawable.cycling_icon
-            "baseball" -> R.drawable.baseball_icon
+    fun getIcon(eventName: String?): Int {
+        return when {
+            eventName.equals("tennis",true) -> R.drawable.tennis_icon
+            eventName.equals("football",true) -> R.drawable.football_icon
+            eventName.equals("basketball",true) -> R.drawable.basketball_icon
+            eventName.equals("cycling",true) -> R.drawable.cycling_icon
+            eventName.equals("baseball",true) -> R.drawable.baseball_icon
             else -> R.drawable.default_icon
         }
     }
