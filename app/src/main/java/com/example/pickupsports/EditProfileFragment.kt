@@ -10,16 +10,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.pickupsports.databinding.FragmentEditProfileBinding
-import com.example.pickupsports.databinding.FragmentHomeBinding
-import com.example.pickupsports.databinding.FragmentProfileBinding
-import com.example.pickupsports.databinding.FragmentRegisterBinding
-import com.example.pickupsports.persistence.EventsRecyclerViewAdapter
-import com.example.pickupsports.persistence.EventsStorage
 import com.example.pickupsports.ui.loginAndRegister.UserData
-import com.firebase.ui.auth.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
