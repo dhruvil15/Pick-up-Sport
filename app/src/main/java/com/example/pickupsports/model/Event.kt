@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.LatLng
  * An event object
  * TODO: add features of sports event
  */
-class Event (val owner: UserData? = null,
+data class Event (val owner: UserData? = null,
              val eventId: String? = null,
              val location_text: String? = null,
              val location: LatLng? = null,
@@ -17,6 +17,4 @@ class Event (val owner: UserData? = null,
              val capacity: Int? = null,
              val levelOfPlay: String? = null,
              val notice: String? = null,
-) {
-
-}
+)

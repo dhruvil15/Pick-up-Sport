@@ -1,6 +1,7 @@
 package com.example.pickupsports
 
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -17,15 +18,18 @@ import com.example.pickupsports.persistence.EventsRecyclerViewAdapter
 import com.example.pickupsports.persistence.EventsStorage
 import com.example.pickupsports.ui.loginAndRegister.UserData
 import com.google.android.gms.maps.model.LatLng
-import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class HomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null;
+    private var _binding: FragmentHomeBinding? = null
 
+    private lateinit var dbref: DatabaseReference
+    private lateinit var eventList: ArrayList<Event>
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -36,8 +40,6 @@ class HomeFragment : Fragment() {
     ): View? {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-
         return binding.root
 
     }
@@ -50,16 +52,18 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_HomeFragment_to_CreateEventFragment)
         }
 
+        eventList = arrayListOf<Event>()
+
         val recylerView : RecyclerView = view.findViewById(R.id.eventRV)
         recylerView.layoutManager = LinearLayoutManager(activity)
 
         val recyclerViewAdapter = EventsRecyclerViewAdapter()
         recylerView.adapter = recyclerViewAdapter
+        getEvents(recyclerViewAdapter)
+        Log.i(TAG, "events: " + EventsStorage.events)
+        // cache the data to event storage for future use
+        EventsStorage.events = eventList
 
-        recyclerViewAdapter.setEvents(EventsStorage.events)
-
-        // fetch data from db
-        getEvents()
     }
 
     override fun onDestroyView() {
@@ -70,18 +74,27 @@ class HomeFragment : Fragment() {
     /**
      * get all exist events from db, return an ArrayList of events
      */
-    private fun getEvents() {
-        Log.w(ContentValues.TAG, "getEvents\n")
-        EventsStorage.database.child("events").get().addOnSuccessListener {
-            if (it.exists()){
-                Log.w(ContentValues.TAG,"Test: \n" + it.children.toList().forEach{
-                    Log.w(ContentValues.TAG, "Item: ${it.key}")
-                    EventsStorage.events.add(buildEvent(it))
-                })
-            } else {
-                Log.w(ContentValues.TAG, "Event Information not found.")
+    private fun getEvents(adapter: EventsRecyclerViewAdapter) {
+        dbref = FirebaseDatabase.getInstance().getReference("events")
+
+        dbref.addValueEventListener(object : ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (snapshot.exists()) {
+
+                    for (eventSnapshot in snapshot.children) {
+                        eventList.add(buildEvent(eventSnapshot))
+                    }
+                    adapter.setEvents(eventList)
+                }
             }
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+                // do nothing
+            }
+        })
+
     }
 
     /**
