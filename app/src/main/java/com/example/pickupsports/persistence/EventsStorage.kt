@@ -16,18 +16,18 @@ import com.google.firebase.ktx.Firebase
  */
 object EventsStorage {
 
-    private var database: DatabaseReference = Firebase.database.reference
+    var database: DatabaseReference = Firebase.database.reference
     val events = ArrayList<Event>()
 
-    init {
-
+//    init {
+//
 //        for (i in 0 until 4){
 //            events.add(Event(null,"Event #$i", "Body #$i"))
 //        }
-        // TODO: can't init at first
-        getEvents()
-        Log.w(TAG, "ArraySize: " + events.size)
-    }
+//        // TODO: can't init at first
+////        getEvents()
+////        Log.w(TAG, "ArraySize: " + events.size)
+//    }
 
     /**
      * get all exist events from db, return an ArrayList of events
