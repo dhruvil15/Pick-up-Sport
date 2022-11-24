@@ -25,6 +25,42 @@
     <string name="app_title">Pickup Sports</string>
     <string name="app_logo">App Logo</string>
 
+    <!--    The following is string value for creation page-->
+    <string name="create_title">Create a New Event</string>
+    <string name="create_title_date">Date</string>
+    <string name="create_title_time">Time</string>
+    <string name="create_title_location">Location</string>
+    <string name="create_title_sport_name">Sport Name</string>
+    <string name="create_title_vacancy">Vacancy</string>
+    <string name="create_title_total_number">Total Number of Players</string>
+    <string name="create_title_level">Level of Play</string>
+    <string name="create_title_Notice">Notice</string>
+
+    <string name="create_date_hint">Start</string>
+    <string name="create_time_hint">Specify a Time</string>
+    <string name="create_notice_hint">What do you want new members to know?</string>
+
+    <string-array name="level_array">
+        <item>Any</item>
+        <item>Beginner</item>
+        <item>Intermediate</item>
+        <item>Pro</item>
+    </string-array>
+
+    <!-- The following is string value for summary page -->
+    <string name="summary_title">Event Created</string>
+    <string name="summary_title2">Summary</string>
+    <string name="event_title">Event:</string>
+    <string name="summary_time_title">Time:</string>
+    <string name="summary_location_title">Location:</string>
+    <string name="summary_vacancy_title">Vacancy:</string>
+    <string name="summary_level_title">Level of Play:</string>
+    <string name="summary_notice_title">Notice:</string>
+    <string name="summary_success_notification">Event added to the upcoming list\nThis is the unique event ID</string>
+    <string name="summary_eventID_title">EID#</string>
+
+
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -117,5 +153,6 @@
     <string name="event_fragment_label">event_fragment_label</string>
     <string name="create_event_fragment_label">create_event_fragment_label</string>
     <string name="home_fragment_label">home_fragment_label</string>
+
 
 </resources>

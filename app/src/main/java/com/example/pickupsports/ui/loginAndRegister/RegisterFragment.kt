@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.pickupsports.R
 
 import com.example.pickupsports.databinding.FragmentRegisterBinding
+import com.example.pickupsports.model.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
