@@ -5,55 +5,89 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import android.widget.EditText
+import androidx.fragment.app.FragmentResultListener
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.pickupsports.databinding.FragmentHomeBinding
+import com.example.pickupsports.databinding.FragmentSummaryBinding
+import com.example.pickupsports.model.Event
+import com.example.pickupsports.model.UserData
+import com.example.pickupsports.persistence.EventsRecyclerViewAdapter
+import com.example.pickupsports.persistence.EventsStorage
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 /**
  * A simple [Fragment] subclass.
- * Use the [SummaryFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 class SummaryFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentSummaryBinding? = null;
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
+    private lateinit var database: DatabaseReference
+
+    private lateinit var eventName: String
+    private lateinit var time: String
+    private lateinit var location: String
+    private lateinit var vacancy: String
+    private lateinit var level: String
+    private lateinit var notice: String
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_summary, container, false)
+
+        _binding = FragmentSummaryBinding.inflate(inflater, container, false)
+        database = Firebase.database.reference
+
+        return binding.root
+
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SummaryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SummaryFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val _eventID = database.child("latestEventPost").get().addOnSuccessListener{
+
+            val eventID = it.child("1").value.toString()
+
+            database.child("events").child(eventID).get().addOnSuccessListener {
+
+                eventName = it.child("sportName").value.toString()
+                time = it.child("time").value.toString().plus(", ")
+                    .plus(it.child("date").value.toString())
+                location = it.child("location_text").value.toString()
+                vacancy = it.child("currentPlayer").value.toString().plus("/")
+                    .plus(it.child("capacity").value.toString())
+                level = it.child("levelOfPlay").value.toString()
+                notice = it.child("notice").value.toString()
+
+                binding.summaryEventDisplay.text = eventName
+                binding.summaryTimeDisplay.text = time
+                binding.summaryLocationDisplay.text = location
+                binding.summaryVacancyDisplay.text = vacancy
+                binding.summaryLevelDisplay.text = level
+                binding.summaryNoticeDisplay.text = notice
+                binding.summaryEventIDDisplay.text = eventID
+
             }
+
+        }
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

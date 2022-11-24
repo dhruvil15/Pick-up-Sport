@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.example.pickupsports.databinding.FragmentCreateEventBinding
@@ -39,7 +41,6 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
     private lateinit var vacancyFrameInput: EditText
     private lateinit var totalNumberFrameInput: EditText
     private lateinit var levelOfPlay: String
-    private lateinit var _eventID: String
 
     private lateinit var database: DatabaseReference
 
@@ -150,24 +151,23 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
             val date = binding.createInputDate.text.toString()
             val time = binding.createInputTime.text.toString()
             val sportName = binding.createInputSportName.text.toString()
-            val capacity = binding.createFrameInput.text.toString().toInt()
+            val capacity = binding.createFrameInput2.text.toString().toInt()
+            val currrentPlayer = binding.createFrameInput.text.toString().toInt()
             val notice = binding.createInputNotice.text.toString()
-            uploadEvent(
-                location.toString(),
+
+             uploadEvent(
+                location,
                 latlng,
                 date,
                 time,
                 sportName,
                 capacity,
+                currrentPlayer,
                 levelOfPlay,
                 notice
             )
 
-            val result: Bundle = Bundle()
-            result.putString("eventID", _eventID)
-            parentFragment?.setFragmentResult("events", result)
             findNavController().navigate(R.id.action_CreateEvent_to_summaryFragment)
-
         }
 
     }
@@ -238,13 +238,13 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         time: String,
         sportName: String,
         capacity: Int,
+        currrentPlayer: Int,
         levelOfPlay: String,
         notice : String
-    ) {
-
+    ): Unit {
 
         val userID = auth.currentUser?.uid
-        val user = userID?.let { it ->
+         userID?.let { it ->
             database.child("users").child(it).get().addOnSuccessListener {
 
                 val owner  = UserData(
@@ -253,7 +253,6 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                     it.child("lastName").value.toString(),
                     it.child("dob").value.toString()
                 )
-
 
                 val eventID = database.child("events").push().key;
 
@@ -266,19 +265,19 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                     time,
                     sportName,
                     capacity,
+                    currrentPlayer,
                     levelOfPlay,
-                    notice,
+                    notice
                 )
 
                 if (eventID != null) {
                     database.child("events").child(eventID).setValue(event)
                     database.child("participants").child(eventID).child(userID).setValue(owner)
-                    _eventID = eventID
+                    database.child("latestEventPost").child("1").setValue(eventID)
                 }
 
             }
         }
-
 
     }
 
