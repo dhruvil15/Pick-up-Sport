@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pickupsports.databinding.FragmentHomeBinding
@@ -17,7 +16,7 @@ import com.example.pickupsports.persistence.EventsStorage
  */
 class HomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null;
+    private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -26,7 +25,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -36,12 +35,10 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.addEventButton.setOnClickListener {
+ /*       binding.addEventButton.setOnClickListener {
             findNavController().navigate(R.id.action_HomeFragment_to_CreateEventFragment)
-        }
-        binding.profileBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_HomeFragment_to_profileFragment)
-        }
+        }*/
+
         val recylerView : RecyclerView = view.findViewById(R.id.eventRV)
         recylerView.layoutManager = LinearLayoutManager(activity)
 

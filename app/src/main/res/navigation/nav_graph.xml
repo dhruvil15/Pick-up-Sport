@@ -17,6 +17,12 @@
         <action
             android:id="@+id/action_HomeFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_message2"
+            app:destination="@id/MessageFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_upcoming2"
+            app:destination="@id/UpcomingFragment" />
 
     </fragment>
 
@@ -72,4 +78,14 @@
             android:id="@+id/action_editProfileFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/MessageFragment"
+        android:name="com.example.pickupsports.Message"
+        android:label="fragment_message"
+        tools:layout="@layout/fragment_message" />
+    <fragment
+        android:id="@+id/UpcomingFragment"
+        android:name="com.example.pickupsports.upcoming"
+        android:label="fragment_upcoming"
+        tools:layout="@layout/fragment_upcoming" />
 </navigation>
