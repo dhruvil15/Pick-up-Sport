@@ -63,11 +63,20 @@
         android:name="com.example.pickupsports.SummaryFragment"
         android:label="fragment_summary"
         tools:layout="@layout/fragment_summary" >
+        <argument
+            android:name="referer"
+            android:defaultValue="create"
+            app:argType="string"
+            />
         <action
             android:id="@+id/action_ModifyEvent_SummaryFragment_to_CreateEvent"
             app:destination="@id/CreateEvent" />
         <action
             android:id="@+id/action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment"
             app:destination="@id/HomeFragment" />
+        <argument
+            android:name="eventId"
+            android:defaultValue=""
+            app:argType="string" />
     </fragment>
 </navigation>

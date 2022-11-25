@@ -1,6 +1,7 @@
 package com.example.pickupsports.persistence
 
 import android.location.Location
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,8 +50,11 @@ class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapt
         holder.availability?.text = "Spots: " + event.currentPlayer.toString() + "/" + event.capacity.toString()
         holder.levelOfPlay?.text = "Lv: " + event.levelOfPlay
         // click to view event summary
+        val bundle = Bundle()
+        bundle.putString("referer", "home")
+        bundle.putString("eventId", event.eventId)
         holder.eventCard?.setOnClickListener {
-            it.findNavController().navigate(R.id.action_HomeFragment_to_SummaryFragment)
+            it.findNavController().navigate(R.id.action_HomeFragment_to_SummaryFragment, bundle)
         }
     }
 
