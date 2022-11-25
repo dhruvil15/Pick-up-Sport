@@ -40,6 +40,7 @@ class SummaryFragment : Fragment() {
     private lateinit var notice: String
     private lateinit var referer: String
     private lateinit var eventID: String
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -126,7 +127,7 @@ class SummaryFragment : Fragment() {
         }
 
         // copy event id
-        view.findViewById<Button>(R.id.copy_eventID_btn).setOnClickListener {
+        binding.copyEventIDBtn.setOnClickListener {
             copyEventIdToClipboard(binding.summaryEventIDDisplay.text.toString())
         }
 

@@ -47,7 +47,7 @@
         android:layout_height="27dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:background="@mipmap/btn_minus"
+        android:background="@drawable/btn_minus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/create_title_total_number" />
 
@@ -69,7 +69,7 @@
         android:layout_height="27dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:background="@mipmap/btn_add"
+        android:background="@drawable/btn_add"
         app:layout_constraintStart_toEndOf="@+id/create_frame_input2"
         app:layout_constraintTop_toBottomOf="@+id/create_title_total_number" />
 
@@ -269,7 +269,7 @@
         android:layout_height="27dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
-        android:background="@mipmap/btn_add"
+        android:background="@drawable/btn_add"
         app:layout_constraintStart_toEndOf="@+id/create_frame_input"
         app:layout_constraintTop_toBottomOf="@+id/create_title_vacancy" />
 
@@ -296,7 +296,7 @@
         android:layout_height="27dp"
         android:layout_marginStart="36dp"
         android:layout_marginTop="12dp"
-        android:background="@mipmap/btn_minus"
+        android:background="@drawable/btn_minus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/create_title_vacancy" />
 
