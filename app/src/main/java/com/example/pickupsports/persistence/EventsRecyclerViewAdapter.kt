@@ -43,12 +43,11 @@ class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapt
         holder.eventIcon?.setImageResource(getIcon(event.sportName))
 
         // set time, date, location, availability and level of play
-        // TODO: uncomment here when event is implemented
         holder.eventTime?.text = event.time
         holder.eventDate?.text = event.date
         holder.eventLocation?.text = event.location_text
-        //holder.availability?.text = event.participants.size + "/" + event.capacity
-        holder.levelOfPlay?.text = event.levelOfPlay
+        holder.availability?.text = "Spots: " + event.currentPlayer.toString() + "/" + event.capacity.toString()
+        holder.levelOfPlay?.text = "Lv: " + event.levelOfPlay
         // click to modify a selected event
         holder.eventCard?.setOnClickListener {
             it.findNavController().navigate(R.id.action_HomeFragment_to_CreateEventFragment)
