@@ -31,7 +31,6 @@ class HomeFragment : Fragment() {
     private lateinit var dbref: DatabaseReference
     private lateinit var eventList: ArrayList<Event>
     // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -62,11 +61,8 @@ class HomeFragment : Fragment() {
         recylerView.adapter = recyclerViewAdapter
         getEvents(recyclerViewAdapter)
         Log.i(TAG, "events: " + EventsStorage.events)
-        // cache the data to event storage for future use
-        EventsStorage.events = eventList
-
     }
-
+    // onDestroyView.
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
