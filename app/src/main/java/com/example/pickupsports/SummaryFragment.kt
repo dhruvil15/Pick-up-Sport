@@ -39,7 +39,7 @@ class SummaryFragment : Fragment() {
     private lateinit var level: String
     private lateinit var notice: String
     private lateinit var referer: String
-
+    private lateinit var eventID: String
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,6 +51,22 @@ class SummaryFragment : Fragment() {
 
         // check referer
         referer = arguments?.getString("referer").toString()
+
+        //get created event information entered by the user
+        eventID = arguments?.getString("lastEvent").toString()
+        eventName = arguments?.getString("eventName").toString()
+        time = arguments?.getString("time").toString().plus(", ")
+            .plus(arguments?.getString("date").toString())
+        location = arguments?.getString("location").toString()
+        vacancy = arguments?.get("currentPlayer").toString().plus("/")
+            .plus(arguments?.get("capacity").toString())
+        level = arguments?.getString("level").toString()
+        notice = arguments?.getString("notice").toString()
+
+        if (notice.equals("null")){
+            notice = " "
+        }
+
         return binding.root
 
     }
@@ -66,33 +82,15 @@ class SummaryFragment : Fragment() {
          * else: comes from home page, display the selected event info
          */
         if (referer.equals("create", true)) {
-            val _eventID = database.child("latestEventPost").get().addOnSuccessListener {
 
+            binding.summaryEventDisplay.text = eventName
+            binding.summaryTimeDisplay.text = time
+            binding.summaryLocationDisplay.text = location
+            binding.summaryVacancyDisplay.text = vacancy
+            binding.summaryLevelDisplay.text = level
+            binding.summaryNoticeDisplay.text = notice
+            binding.summaryEventIDDisplay.text = eventID
 
-                val eventID = it.child("1").value.toString()
-
-                database.child("events").child(eventID).get().addOnSuccessListener {
-
-                    eventName = it.child("sportName").value.toString()
-                    time = it.child("time").value.toString().plus(", ")
-                        .plus(it.child("date").value.toString())
-                    location = it.child("location_text").value.toString()
-                    vacancy = it.child("currentPlayer").value.toString().plus("/")
-                        .plus(it.child("capacity").value.toString())
-                    level = it.child("levelOfPlay").value.toString()
-                    notice = it.child("notice").value.toString()
-
-                    binding.summaryEventDisplay.text = eventName
-                    binding.summaryTimeDisplay.text = time
-                    binding.summaryLocationDisplay.text = location
-                    binding.summaryVacancyDisplay.text = vacancy
-                    binding.summaryLevelDisplay.text = level
-                    binding.summaryNoticeDisplay.text = notice
-                    binding.summaryEventIDDisplay.text = eventID
-
-                }
-
-            }
         } else if (referer.equals("home", true)) {
             // come from home page: view selected event summary
             binding.summaryTitle.text = "Check/Update/Quit"

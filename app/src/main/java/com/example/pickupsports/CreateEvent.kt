@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -48,6 +49,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
     private lateinit var addressList: List<Address>
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var eventID: String
 
 
     override fun onCreateView(
@@ -147,7 +149,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
             }
 
             val address = addressList[0]
-            val latlng : LatLng = LatLng(address.latitude, address.longitude)
+            val latlng = LatLng(address.latitude, address.longitude)
             val date = binding.createInputDate.text.toString()
             val time = binding.createInputTime.text.toString()
             val sportName = binding.createInputSportName.text.toString()
@@ -155,7 +157,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
             val currrentPlayer = binding.createFrameInput.text.toString().toInt()
             val notice = binding.createInputNotice.text.toString()
 
-             uploadEvent(
+            eventID = uploadEvent(
                 location,
                 latlng,
                 date,
@@ -167,7 +169,18 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                 notice
             )
 
-            findNavController().navigate(R.id.action_CreateEvent_to_summaryFragment)
+            val bundle = packBundle(
+                location,
+                date,
+                time,
+                sportName,
+                capacity,
+                currrentPlayer,
+                levelOfPlay,
+                notice
+            )
+
+            findNavController().navigate(R.id.action_CreateEvent_to_summaryFragment, bundle)
         }
 
     }
@@ -241,9 +254,11 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         currrentPlayer: Int,
         levelOfPlay: String,
         notice : String
-    ): Unit {
+    ): String {
 
         val userID = auth.currentUser?.uid
+        val eventID = database.child("events").push().key
+
          userID?.let { it ->
             database.child("users").child(it).get().addOnSuccessListener {
 
@@ -253,8 +268,6 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                     it.child("lastName").value.toString(),
                     it.child("dob").value.toString()
                 )
-
-                val eventID = database.child("events").push().key;
 
                 val event = Event(
                     owner,
@@ -273,12 +286,37 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                 if (eventID != null) {
                     database.child("events").child(eventID).setValue(event)
                     database.child("participants").child(eventID).child(userID).setValue(owner)
-                    database.child("latestEventPost").child("1").setValue(eventID)
                 }
 
             }
         }
 
+        return eventID.toString()
+    }
+
+    private fun packBundle(
+        location: String,
+        date: String,
+        time: String,
+        sportName: String,
+        capacity: Int,
+        currrentPlayer: Int,
+        levelOfPlay: String,
+        notice : String
+    ): Bundle{
+
+        val bundle = Bundle()
+        bundle.putString("location", location)
+        bundle.putString("lastEvent", eventID)
+        bundle.putString("eventName", sportName)
+        bundle.putString("time", time)
+        bundle.putString("date", date)
+        bundle.putString("level", levelOfPlay)
+        bundle.putInt("capacity", capacity)
+        bundle.putInt("currentPlayer", currrentPlayer)
+        bundle.putString("notice", notice)
+
+        return bundle
     }
 
     override fun onDestroyView() {
