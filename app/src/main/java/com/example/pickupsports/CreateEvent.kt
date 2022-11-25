@@ -1,5 +1,6 @@
 package com.example.pickupsports
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.location.Address
 import android.location.Geocoder
@@ -61,6 +62,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         _binding = FragmentCreateEventBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
         database = Firebase.database.reference
+
         return binding.root
 
     }
@@ -140,47 +142,52 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         binding.createSaveBtn.setOnClickListener {
 
             /*https://www.javatpoint.com/android-google-map-search-location-using-geocodr*/
-            val location = binding.createInputLocation.text.toString()
 
-            try {
-                addressList = mGeocoder.getFromLocationName(location.toString(), 1)
-            } catch (e: IOException) {
-                e.printStackTrace()
+            if (validateFields()){
+
+                val location = binding.createInputLocation.text.toString()
+
+                try {
+                    addressList = mGeocoder.getFromLocationName(location.toString(), 1)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
+                val address = addressList[0]
+                val latlng = LatLng(address.latitude, address.longitude)
+                val date = binding.createInputDate.text.toString()
+                val time = binding.createInputTime.text.toString()
+                val sportName = binding.createInputSportName.text.toString()
+                val capacity = binding.createFrameInput2.text.toString().toInt()
+                val currentPlayer = binding.createFrameInput.text.toString().toInt()
+                val notice = binding.createInputNotice.text.toString()
+
+                eventID = uploadEvent(
+                    location,
+                    latlng,
+                    date,
+                    time,
+                    sportName,
+                    capacity,
+                    currentPlayer,
+                    levelOfPlay,
+                    notice
+                )
+
+                val bundle = packBundle(
+                    location,
+                    date,
+                    time,
+                    sportName,
+                    capacity,
+                    currentPlayer,
+                    levelOfPlay,
+                    notice
+                )
+
+                findNavController().navigate(R.id.action_CreateEvent_to_summaryFragment, bundle)
+
             }
-
-            val address = addressList[0]
-            val latlng = LatLng(address.latitude, address.longitude)
-            val date = binding.createInputDate.text.toString()
-            val time = binding.createInputTime.text.toString()
-            val sportName = binding.createInputSportName.text.toString()
-            val capacity = binding.createFrameInput2.text.toString().toInt()
-            val currrentPlayer = binding.createFrameInput.text.toString().toInt()
-            val notice = binding.createInputNotice.text.toString()
-
-            eventID = uploadEvent(
-                location,
-                latlng,
-                date,
-                time,
-                sportName,
-                capacity,
-                currrentPlayer,
-                levelOfPlay,
-                notice
-            )
-
-            val bundle = packBundle(
-                location,
-                date,
-                time,
-                sportName,
-                capacity,
-                currrentPlayer,
-                levelOfPlay,
-                notice
-            )
-
-            findNavController().navigate(R.id.action_CreateEvent_to_summaryFragment, bundle)
         }
 
     }
@@ -244,6 +251,31 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
 
     }
 
+    /*The function that checks the fields*/
+    @SuppressLint("SetTextI18n")
+    private fun validateFields(): Boolean {
+        var validated = true
+
+        if(binding.createInputLocation.length() == 0){
+            binding.createInputLocation.error = "Field is required"
+        }
+        if(binding.createInputDate.length() == 0) {
+            binding.createInputDate.error = "Field is required"
+            validated = false
+        }
+        if(binding.createInputTime.length() == 0) {
+            binding.createInputTime.error = "Field is required"
+            validated = false
+        }
+        if(binding.createInputSportName.length() == 0) {
+            binding.createInputSportName.error = "Field is required"
+            validated = false
+        }
+
+        return validated
+    }
+
+    /*The function that write the event into the database*/
     private fun uploadEvent(
         location_text: String,
         location: LatLng,
@@ -251,7 +283,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         time: String,
         sportName: String,
         capacity: Int,
-        currrentPlayer: Int,
+        currentPlayer: Int,
         levelOfPlay: String,
         notice : String
     ): String {
@@ -278,7 +310,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                     time,
                     sportName,
                     capacity,
-                    currrentPlayer,
+                    currentPlayer,
                     levelOfPlay,
                     notice
                 )
@@ -286,6 +318,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                 if (eventID != null) {
                     database.child("events").child(eventID).setValue(event)
                     database.child("participants").child(eventID).child(userID).setValue(owner)
+
                 }
 
             }
@@ -300,7 +333,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         time: String,
         sportName: String,
         capacity: Int,
-        currrentPlayer: Int,
+        currentPlayer: Int,
         levelOfPlay: String,
         notice : String
     ): Bundle{
@@ -313,7 +346,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         bundle.putString("date", date)
         bundle.putString("level", levelOfPlay)
         bundle.putInt("capacity", capacity)
-        bundle.putInt("currentPlayer", currrentPlayer)
+        bundle.putInt("currentPlayer", currentPlayer)
         bundle.putString("notice", notice)
 
         return bundle
