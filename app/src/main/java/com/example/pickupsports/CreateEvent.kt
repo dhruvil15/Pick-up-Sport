@@ -70,12 +70,11 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vacancyFrameInput = binding.createFrameInput
-        totalNumberFrameInput = binding.createFrameInput2
         mGeocoder = Geocoder(this.context)
 
-        /*
+        /**
         * dropdown menu
+         * Cited:
         * https://developer.android.com/develop/ui/views/components/spinner
         * */
         val spinner: Spinner = view.findViewById(R.id.create_level_play)
@@ -92,7 +91,11 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         }
         spinner.onItemSelectedListener = this
 
-        //https://www.geeksforgeeks.org/how-to-popup-datepicker-while-clicking-on-edittext-in-android/
+        /**
+         * dropdown menu
+         * Cited:
+         * https://www.geeksforgeeks.org/how-to-popup-datepicker-while-clicking-on-edittext-in-android/
+         * */
         binding.createInputDate.setOnClickListener {
 
             // on below line we are getting
@@ -127,7 +130,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
             datePickerDialog.show()
         }
 
-        /*
+        /**
         * Add & minus button click function
         * */
         binding.createAddBtn.setOnClickListener{addClick(1)}
@@ -135,18 +138,28 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         binding.createAddBtn2.setOnClickListener{addClick(2)}
         binding.createMinusBtn2.setOnClickListener{minusClick(2)}
 
+        /**
+         * Cancel button listener, cancel the event
+         * */
         binding.createCancelBtn.setOnClickListener {
             findNavController().navigate(R.id.action_Cancel_Create_to_HomeFragment)
         }
 
+        /**
+         * Create button listener, create the event
+         * */
         binding.createSaveBtn.setOnClickListener {
 
-            /*https://www.javatpoint.com/android-google-map-search-location-using-geocodr*/
-
+            //check the user input first
             if (validateFields()){
 
                 val location = binding.createInputLocation.text.toString()
 
+                /**
+                 * Convert location to the coordinates
+                 * Cited:
+                 * https://www.javatpoint.com/android-google-map-search-location-using-geocodr
+                 * */
                 try {
                     addressList = mGeocoder.getFromLocationName(location.toString(), 1)
                 } catch (e: IOException) {
@@ -162,6 +175,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                 val currentPlayer = binding.createFrameInput.text.toString().toInt()
                 val notice = binding.createInputNotice.text.toString()
 
+                //write event information into database, get the event ID
                 eventID = uploadEvent(
                     location,
                     latlng,
@@ -174,6 +188,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                     notice
                 )
 
+                //put event information into bundle
                 val bundle = packBundle(
                     location,
                     date,
@@ -192,17 +207,20 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
 
     }
 
-    //https://developer.android.com/develop/ui/views/components/spinner
+    /**Spinner
+     * onItemSelected & onNothingSelected:
+     * Cited:
+     * https://developer.android.com/develop/ui/views/components/spinner
+     * */
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
         // An item was selected. You can retrieve the selected item using
         levelOfPlay =  parent.getItemAtPosition(pos).toString()
     }
-    //https://developer.android.com/develop/ui/views/components/spinner
     override fun onNothingSelected(parent: AdapterView<*>) {
         levelOfPlay = "Any"
     }
 
-    /*The click function when add button clicked*/
+    /**The click function when add button clicked*/
     private fun addClick(fram_num: Int){
 
         if (fram_num == 1){
@@ -221,7 +239,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
 
     }
 
-    /*The click function when minus button clicked*/
+    /**The click function when minus button clicked*/
     private fun minusClick(fram_num: Int){
 
         if (fram_num == 1){
@@ -251,7 +269,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
 
     }
 
-    /*The function that checks the fields*/
+    /**The function that checks the fields*/
     @SuppressLint("SetTextI18n")
     private fun validateFields(): Boolean {
         var validated = true
@@ -275,7 +293,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         return validated
     }
 
-    /*The function that write the event into the database*/
+    /**The function that write the event into the database*/
     private fun uploadEvent(
         location_text: String,
         location: LatLng,
@@ -288,12 +306,16 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         notice : String
     ): String {
 
+        //get the current user id as participant
         val userID = auth.currentUser?.uid
+
+        //get the event ID
         val eventID = database.child("events").push().key
 
          userID?.let { it ->
             database.child("users").child(it).get().addOnSuccessListener {
 
+                //create User object for save
                 val owner  = UserData(
                     it.child("phoneNumber").value.toString(),
                     it.child("firstName").value.toString(),
@@ -301,6 +323,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                     it.child("dob").value.toString()
                 )
 
+                //create event object for save
                 val event = Event(
                     owner,
                     eventID,
@@ -315,6 +338,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                     notice
                 )
 
+                //store the event to the database, add current user to the participants
                 if (eventID != null) {
                     database.child("events").child(eventID).setValue(event)
                     database.child("participants").child(eventID).child(userID).setValue(owner)
@@ -327,6 +351,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         return eventID.toString()
     }
 
+    /**pack the bundle*/
     private fun packBundle(
         location: String,
         date: String,
