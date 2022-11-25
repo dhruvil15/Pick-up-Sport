@@ -132,7 +132,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         binding.createMinusBtn2.setOnClickListener{minusClick(2)}
 
         binding.createCancelBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_CreateEventFragment_to_HomeFragment)
+            findNavController().navigate(R.id.action_Cancel_Create_to_HomeFragment)
         }
 
         binding.createSaveBtn.setOnClickListener {

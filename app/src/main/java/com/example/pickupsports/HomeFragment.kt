@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
 
         // float button: shortcut to create a event
         binding.addEventButton.setOnClickListener {
-            findNavController().navigate(R.id.action_HomeFragment_to_CreateEventFragment)
+            findNavController().navigate(R.id.action_HomeFragment_to_CreateEvent)
         }
 
         eventList = arrayListOf<Event>()

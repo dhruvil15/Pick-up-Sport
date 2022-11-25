@@ -48,9 +48,9 @@ class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapt
         holder.eventLocation?.text = event.location_text
         holder.availability?.text = "Spots: " + event.currentPlayer.toString() + "/" + event.capacity.toString()
         holder.levelOfPlay?.text = "Lv: " + event.levelOfPlay
-        // click to modify a selected event
+        // click to view event summary
         holder.eventCard?.setOnClickListener {
-            it.findNavController().navigate(R.id.action_HomeFragment_to_CreateEventFragment)
+            it.findNavController().navigate(R.id.action_HomeFragment_to_SummaryFragment)
         }
     }
 
