@@ -94,6 +94,7 @@ class SummaryFragment : Fragment() {
 
             }
         } else if (referer.equals("home", true)) {
+            // come from home page: view selected event summary
             binding.summaryTitle.text = "Check/Update/Quit"
             val eventID = arguments?.getString("eventId").toString()
             val dbref = FirebaseDatabase.getInstance().getReference("events")
