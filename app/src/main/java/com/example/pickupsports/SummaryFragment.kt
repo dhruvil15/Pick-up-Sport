@@ -3,30 +3,17 @@ package com.example.pickupsports
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.fragment.app.FragmentResultListener
-import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.pickupsports.databinding.FragmentHomeBinding
 import com.example.pickupsports.databinding.FragmentSummaryBinding
-import com.example.pickupsports.model.Event
-import com.example.pickupsports.model.UserData
-import com.example.pickupsports.persistence.EventsRecyclerViewAdapter
-import com.example.pickupsports.persistence.EventsStorage
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
@@ -71,12 +58,14 @@ class SummaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.updateQuitBtn.text = if (isOwner("userID")) "UPDATE" else "QUIT"
+
         /**
          * check the source fragment
          * if comes from create, show the create summary
          * else: comes from home page, display the selected event info
          */
-        if (referer.equals("create",true)) {
+        if (referer.equals("create", true)) {
             val _eventID = database.child("latestEventPost").get().addOnSuccessListener {
 
 
@@ -104,8 +93,8 @@ class SummaryFragment : Fragment() {
                 }
 
             }
-        } else if (referer.equals("home",true)) {
-            binding.summaryTitle.text = "Check/Update"
+        } else if (referer.equals("home", true)) {
+            binding.summaryTitle.text = "Check/Update/Quit"
             val eventID = arguments?.getString("eventId").toString()
             val dbref = FirebaseDatabase.getInstance().getReference("events")
             dbref.child(eventID).get().addOnSuccessListener {
@@ -130,13 +119,28 @@ class SummaryFragment : Fragment() {
             }
             // go back to home page
             view.findViewById<Button>(R.id.back_btn).setOnClickListener {
-                it.findNavController().navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
+                it.findNavController()
+                    .navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
             }
-        } else { Log.w(TAG, "Something went wrong") }
+        } else {
+            Log.w(TAG, "Something went wrong")
+        }
 
         // copy event id
         view.findViewById<Button>(R.id.copy_eventID_btn).setOnClickListener {
             copyEventIdToClipboard(binding.summaryEventIDDisplay.text.toString())
+        }
+
+        // quit(non-owner user) or update (owner user) action
+        view.findViewById<Button>(R.id.update_quit_btn).setOnClickListener {
+            // TODO: implement quit event and update event
+            if ((binding.updateQuitBtn.text as String).equals(
+                    "UPDATE",
+                    true
+                )
+            ) it.findNavController()
+                .navigate(R.id.action_ModifyEvent_SummaryFragment_to_CreateEvent) else it.findNavController()
+                .navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
         }
 
     }
@@ -154,5 +158,11 @@ class SummaryFragment : Fragment() {
         clipboardManager.setPrimaryClip(clipData)
 
         Toast.makeText(activity, "Event ID copied to clipboard!", Toast.LENGTH_LONG).show()
+    }
+
+    // check if the current user enters a summary page that the user is the host(owner)
+    // take in the userID and check against the db
+    private fun isOwner(userID: String): Boolean {
+        return false
     }
 }
