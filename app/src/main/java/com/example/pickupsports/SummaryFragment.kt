@@ -1,15 +1,23 @@
 package com.example.pickupsports
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.setFragmentResult
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -97,6 +105,7 @@ class SummaryFragment : Fragment() {
 
             }
         } else if (referer.equals("home",true)) {
+            binding.summaryTitle.text = "Check/Update"
             val eventID = arguments?.getString("eventId").toString()
             val dbref = FirebaseDatabase.getInstance().getReference("events")
             dbref.child(eventID).get().addOnSuccessListener {
@@ -119,11 +128,31 @@ class SummaryFragment : Fragment() {
                     binding.summaryEventIDDisplay.text = eventID
                 }
             }
+            // go back to home page
+            view.findViewById<Button>(R.id.back_btn).setOnClickListener {
+                it.findNavController().navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
+            }
         } else { Log.w(TAG, "Something went wrong") }
+
+        // copy event id
+        view.findViewById<Button>(R.id.copy_eventID_btn).setOnClickListener {
+            copyEventIdToClipboard(binding.summaryEventIDDisplay.text.toString())
+        }
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    // copy to clipboard
+    private fun copyEventIdToClipboard(eventID: String) {
+
+        val clipboardManager = activity?.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText("EventID", eventID)
+        clipboardManager.setPrimaryClip(clipData)
+
+        Toast.makeText(activity, "Event ID copied to clipboard!", Toast.LENGTH_LONG).show()
     }
 }
