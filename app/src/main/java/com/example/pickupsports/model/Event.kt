@@ -5,7 +5,7 @@ import com.google.android.gms.maps.model.LatLng
 /**
  * An event object
  */
-class Event (
+data class Event (
     val owner: UserData? = null,
     val eventId: String? = null,
     val location_text: String? = null,
@@ -17,6 +17,4 @@ class Event (
     val currentPlayer: Int? = null,
     val levelOfPlay: String? = null,
     val notice: String? = null,
-) {
-
-}
+)
