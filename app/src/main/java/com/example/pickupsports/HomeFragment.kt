@@ -102,7 +102,7 @@ class HomeFragment : Fragment() {
         // event info
         val owner: UserData? = null
         val eventId: String? = entry.key
-        val location_text: String? = entry.child("location_text").value.toString()
+        val locationText: String? = entry.child("locationText").value.toString()
         val location: LatLng? = null
         val time: String? = entry.child("time").value.toString()
         val date: String? = entry.child("date").value.toString()
@@ -112,7 +112,7 @@ class HomeFragment : Fragment() {
         val levelOfPlay: String? = entry.child("levelOfPlay").value.toString()
         val notice: String? = entry.child("notice").value.toString()
 
-        return Event(owner, eventId, location_text, location,date, time, sportName, capacity, currPlayer, levelOfPlay, notice)
+        return Event(owner, eventId, locationText, location,date, time, sportName, capacity, currPlayer, levelOfPlay, notice)
     }
 
 }

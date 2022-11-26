@@ -8,7 +8,7 @@ import com.google.android.gms.maps.model.LatLng
 data class Event (
     val owner: UserData? = null,
     val eventId: String? = null,
-    val location_text: String? = null,
+    val locationText: String? = null,
     val location: LatLng? = null,
     val date: String? = null,
     val time: String? = null,

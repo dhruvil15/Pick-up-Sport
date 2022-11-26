@@ -14,6 +14,7 @@ import com.example.pickupsports.R
 import com.example.pickupsports.model.Event
 import com.example.pickupsports.model.UserData
 import com.firebase.ui.auth.data.model.User
+import com.google.firebase.auth.FirebaseAuth
 
 class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapter.EventListItem>() {
     private var events = emptyList<Event>()
@@ -27,6 +28,8 @@ class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapt
         val eventDate: TextView? = eventListItemView?.findViewById(R.id.eventDate)
         val availability: TextView? = eventListItemView?.findViewById(R.id.numberOfPlayer)
         val levelOfPlay: TextView? = eventListItemView?.findViewById(R.id.levelOfPlay)
+        val userID = FirebaseAuth.getInstance().currentUser?.uid
+
         var eventPosition = 0
 
     }
@@ -46,13 +49,14 @@ class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapt
         // set time, date, location, availability and level of play
         holder.eventTime?.text = event.time
         holder.eventDate?.text = event.date
-        holder.eventLocation?.text = event.location_text
+        holder.eventLocation?.text = event.locationText
         holder.availability?.text = "Spots: " + event.currentPlayer.toString() + "/" + event.capacity.toString()
         holder.levelOfPlay?.text = "Lv: " + event.levelOfPlay
         // click to view event summary
         val bundle = Bundle()
         bundle.putString("referer", "home")
         bundle.putString("eventId", event.eventId)
+        bundle.putString("userID", holder.userID.toString())
         holder.eventCard?.setOnClickListener {
             it.findNavController().navigate(R.id.action_HomeFragment_to_SummaryFragment, bundle)
         }

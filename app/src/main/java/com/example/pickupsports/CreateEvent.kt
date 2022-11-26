@@ -70,6 +70,9 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        vacancyFrameInput = binding.createFrameInput
+        totalNumberFrameInput = binding.createFrameInput2
+
         mGeocoder = Geocoder(this.context)
 
         /**
@@ -92,7 +95,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         spinner.onItemSelectedListener = this
 
         /**
-         * dropdown menu
+         * Calender date input
          * Cited:
          * https://www.geeksforgeeks.org/how-to-popup-datepicker-while-clicking-on-edittext-in-android/
          * */
@@ -165,9 +168,9 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
-
                 val address = addressList[0]
                 val latlng = LatLng(address.latitude, address.longitude)
+
                 val date = binding.createInputDate.text.toString()
                 val time = binding.createInputTime.text.toString()
                 val sportName = binding.createInputSportName.text.toString()
@@ -221,9 +224,9 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
     }
 
     /**The click function when add button clicked*/
-    private fun addClick(fram_num: Int){
+    private fun addClick(framNum: Int){
 
-        if (fram_num == 1){
+        if (framNum == 1){
 
             val value : Int = vacancyFrameInput.text.toString().toInt() + 1
 
@@ -240,9 +243,9 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
     }
 
     /**The click function when minus button clicked*/
-    private fun minusClick(fram_num: Int){
+    private fun minusClick(framNum: Int){
 
-        if (fram_num == 1){
+        if (framNum == 1){
 
             var value : Int = vacancyFrameInput.text.toString().toInt() - 1
 
@@ -295,7 +298,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
 
     /**The function that write the event into the database*/
     private fun uploadEvent(
-        location_text: String,
+        locationText: String,
         location: LatLng,
         date: String,
         time: String,
@@ -327,7 +330,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                 val event = Event(
                     owner,
                     eventID,
-                    location_text,
+                    locationText,
                     location,
                     date,
                     time,

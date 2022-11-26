@@ -1,5 +1,6 @@
 package com.example.pickupsports
 
+import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.ContentValues.TAG
@@ -40,6 +41,7 @@ class SummaryFragment : Fragment() {
     private lateinit var notice: String
     private lateinit var referer: String
     private lateinit var eventID: String
+    private lateinit var currentUser: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,6 +65,7 @@ class SummaryFragment : Fragment() {
             .plus(arguments?.get("capacity").toString())
         level = arguments?.getString("level").toString()
         notice = arguments?.getString("notice").toString()
+        currentUser = arguments?.getString("userID").toString()
 
         if (notice.equals("null")){
             notice = " "
@@ -72,10 +75,9 @@ class SummaryFragment : Fragment() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.updateQuitBtn.text = if (isOwner("userID")) "UPDATE" else "QUIT"
 
         /**
          * check the source fragment
@@ -92,17 +94,18 @@ class SummaryFragment : Fragment() {
             binding.summaryNoticeDisplay.text = notice
             binding.summaryEventIDDisplay.text = eventID
 
+            binding.updateQuitBtn.visibility = View.GONE
+
         } else if (referer.equals("home", true)) {
             // come from home page: view selected event summary
             binding.summaryTitle.text = "Check/Update/Quit"
             val eventID = arguments?.getString("eventId").toString()
-            val dbref = FirebaseDatabase.getInstance().getReference("events")
-            dbref.child(eventID).get().addOnSuccessListener {
+            database.child("events").child(eventID).get().addOnSuccessListener {
                 if (it.exists()) {
                     eventName = it.child("sportName").value.toString()
                     time = it.child("time").value.toString().plus(", ")
                         .plus(it.child("date").value.toString())
-                    location = it.child("location_text").value.toString()
+                    location = it.child("locationText").value.toString()
                     vacancy = it.child("currentPlayer").value.toString().plus("/")
                         .plus(it.child("capacity").value.toString())
                     level = it.child("levelOfPlay").value.toString()
@@ -117,13 +120,14 @@ class SummaryFragment : Fragment() {
                     binding.summaryEventIDDisplay.text = eventID
                 }
             }
-            // go back to home page
-            view.findViewById<Button>(R.id.back_btn).setOnClickListener {
-                it.findNavController()
-                    .navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
-            }
         } else {
             Log.w(TAG, "Something went wrong")
+        }
+
+        // go back to home page
+        view.findViewById<Button>(R.id.back_btn).setOnClickListener {
+            it.findNavController()
+                .navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
         }
 
         // copy event id
@@ -133,14 +137,22 @@ class SummaryFragment : Fragment() {
 
         // quit(non-owner user) or update (owner user) action
         view.findViewById<Button>(R.id.update_quit_btn).setOnClickListener {
-            // TODO: implement quit event and update event
+            // TODO: implement update event
             if ((binding.updateQuitBtn.text as String).equals(
                     "UPDATE",
                     true
                 )
-            ) it.findNavController()
-                .navigate(R.id.action_ModifyEvent_SummaryFragment_to_CreateEvent) else it.findNavController()
-                .navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
+            ) {
+                it.findNavController()
+                    .navigate(R.id.action_ModifyEvent_SummaryFragment_to_CreateEvent)
+            } else {
+                database.child("participants").child(eventID).child(currentUser).get().addOnSuccessListener{
+                    database.child("participants").child(eventID).child(currentUser).removeValue()
+                }
+
+                it.findNavController()
+                    .navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
+            }
         }
 
     }
@@ -163,6 +175,41 @@ class SummaryFragment : Fragment() {
     // check if the current user enters a summary page that the user is the host(owner)
     // take in the userID and check against the db
     private fun isOwner(userID: String): Boolean {
-        return false
+        var check = false
+        var finish = false
+
+        /*while (!finish){
+            eventID?.let{
+                database.child("events").child(eventID).child("owner").get().addOnSuccessListener{
+
+                    val ownerDob = it.child("dob").value.toString()
+                    val ownerLastName = it.child("lastName").value.toString()
+                    val ownerFirstName = it.child("firstName").value.toString()
+                    val ownerPhoneNumber = it.child("phoneNumber").value.toString()
+
+                      userID?.let{
+                        database.child("users").child(userID).get().addOnSuccessListener {
+
+                            val currentDob = it.child("dob").value.toString()
+                            val currentLastName = it.child("lastName").value.toString()
+                            val currentFirstName = it.child("firstName").value.toString()
+                            val currentPhoneNumber = it.child("phoneNumber").value.toString()
+
+                            if ((ownerDob == currentDob) &&
+                                (ownerLastName == currentLastName) &&
+                                (ownerFirstName == currentFirstName) &&
+                                (ownerPhoneNumber == currentPhoneNumber)
+                            ){
+                                check = true
+                            }
+
+                            finish = true
+                        }
+                    }
+                }
+            }
+        }*/
+
+        return check
     }
 }
