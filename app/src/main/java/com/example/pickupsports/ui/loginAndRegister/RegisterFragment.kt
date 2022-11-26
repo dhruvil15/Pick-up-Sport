@@ -1,6 +1,9 @@
 package com.example.pickupsports.ui.loginAndRegister
 
+import android.Manifest
 import android.app.DatePickerDialog
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.util.Log
@@ -9,14 +12,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.pickupsports.R
 
 import com.example.pickupsports.databinding.FragmentRegisterBinding
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
 import java.util.*
 
 class RegisterFragment : Fragment() {
@@ -108,13 +116,39 @@ class RegisterFragment : Fragment() {
                 ).addOnCompleteListener() { task ->
                     if (task.isSuccessful) {
 
-                        uploadUserData(
-                            fullName.text.toString(),
-                            phoneButton.text.toString(),
-                            dob.text.toString()
-                        )
+                        FirebaseMessaging.getInstance().token.addOnCompleteListener(
+                            OnCompleteListener { task ->
+                                if (!task.isSuccessful) {
+                                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                                    return@OnCompleteListener
+                                }
+
+                                // Get new FCM registration token
+                                var token = task.result as String
+                                uploadUserData(
+                                    fullName.text.toString(),
+                                    phoneButton.text.toString(),
+                                    dob.text.toString(),
+                                    token
+                                )
+
+                                // Log and toast
+                                Log.d(TAG, token)
+                            })
+                        Firebase.messaging.subscribeToTopic("events")
+                            .addOnCompleteListener { task ->
+                                var msg = "Subscribed"
+                                if (!task.isSuccessful) {
+                                    msg = "Subscribe failed"
+                                }
+                                Log.d(TAG, msg)
+                            }
                         // Register success
                         Log.d(TAG, "createUserWithEmail:success")
+
+                        askNotificationPermission()
+
+
                         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                     } else {
                         // If register fails, display a message to the user.
@@ -165,13 +199,43 @@ class RegisterFragment : Fragment() {
         return validated
     }
 
-    fun uploadUserData(fullName: String, phoneNumber: String, dob: String) {
+    fun uploadUserData(fullName: String, phoneNumber: String, dob: String, token: String) {
         val firstName: String = fullName.split(" ")[0]
         val lastName: String = fullName.split(" ")[1]
 
-        val user = UserData(phoneNumber, firstName, lastName, dob)
+        val user = UserData(phoneNumber, firstName, lastName, dob, token)
         val userID = auth.currentUser?.uid
         userID?.let { database.child("users").child(it) }?.setValue(user)
+    }
+
+    // Declare the launcher at the top of your Activity/Fragment:
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // FCM SDK (and your app) can post notifications.
+        } else {
+            // TODO: Inform user that that your app will not show notifications.
+        }
+    }
+
+    private fun askNotificationPermission() {
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= 33) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                // FCM SDK (and your app) can post notifications.
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                // TODO: display an educational UI explaining to the user the features that will be enabled
+                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
+                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
+                //       If the user selects "No thanks," allow the user to continue without notifications.
+            } else {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 
 }

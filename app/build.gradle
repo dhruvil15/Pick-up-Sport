@@ -6,12 +6,13 @@ plugins {
 
 android {
     namespace 'com.example.pickupsports'
-    compileSdk 32
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.example.pickupsports"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
+        compileSdkVersion 33
         versionCode 1
         versionName "1.0"
 
