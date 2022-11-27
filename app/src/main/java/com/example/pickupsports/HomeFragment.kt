@@ -1,10 +1,12 @@
 package com.example.pickupsports
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pickupsports.databinding.FragmentHomeBinding
@@ -34,6 +36,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if(NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()) {
+            Log.d("TEST", "Ya")
+        }
 
  /*       binding.addEventButton.setOnClickListener {
             findNavController().navigate(R.id.action_HomeFragment_to_CreateEventFragment)
