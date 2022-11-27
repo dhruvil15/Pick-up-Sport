@@ -152,6 +152,9 @@ class SummaryFragment : Fragment() {
                     true
                 )
             ) {
+
+                Toast.makeText(activity, "Event Updated!", Toast.LENGTH_LONG).show()
+
                 it.findNavController()
                     .navigate(R.id.action_ModifyEvent_SummaryFragment_to_CreateEvent)
             } else if ((binding.updateQuitBtn.text as String).equals(
@@ -164,7 +167,7 @@ class SummaryFragment : Fragment() {
                         database.child("participants").child(eventID).child(auth.currentUser!!.uid)
                             .removeValue()
                     }
-
+                Toast.makeText(activity, "Event quit successfully!", Toast.LENGTH_LONG).show()
                 it.findNavController()
                     .navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
             } else if ((binding.updateQuitBtn.text as String).equals(
