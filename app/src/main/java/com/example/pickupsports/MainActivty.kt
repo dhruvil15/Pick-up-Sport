@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pickupsports.databinding.ActivityMainActivtyBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +18,10 @@ class MainActivty : AppCompatActivity() {
     private lateinit var binding: ActivityMainActivtyBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var navController: NavController
+
+    private lateinit var userRecyclerView: RecyclerView
+    private lateinit var userList: ArrayList<User>
+    private lateinit var adapter: UserAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +52,9 @@ class MainActivty : AppCompatActivity() {
             }
         }
         changeFragmentOnSelect()
+
+        userList = ArrayList()
+        adapter = UserAdapter(this,userList)
     }
 
     fun changeFragmentOnSelect(){
