@@ -62,7 +62,6 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         emailTextView = binding.email
-        //passwordTextView = binding.password
         phoneButton = binding.phoneNumber
         dob = binding.dateOfBirth
         fullName = binding.name
@@ -114,7 +113,6 @@ class ProfileFragment : Fragment() {
 
     private fun setUserData() {
         emailTextView.text = auth.currentUser!!.email.toString()
-        //passwordTextView.text = "**********"
         phoneButton.text = userPhoneNumber
         dob.text = userDob
         fullName.text = userName
