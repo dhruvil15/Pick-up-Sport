@@ -12,15 +12,14 @@
             android:id="@+id/app_logo"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/ic_baseline_home_24"/>
+            android:src="@drawable/ic_baseline_home_24" />
 
         <TextView
             android:id="@+id/notification_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="34dp"
+            android:layout_marginLeft="38dp"
             android:layout_toRightOf="@+id/app_logo"
-            android:text="New Event!"
             android:textSize="28sp" />
 
         <TextView
@@ -31,8 +30,7 @@
             android:layout_marginLeft="38dp"
             android:layout_marginTop="6dp"
             android:layout_toRightOf="@+id/app_logo"
-            android:text="Description"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
 
     </RelativeLayout>
