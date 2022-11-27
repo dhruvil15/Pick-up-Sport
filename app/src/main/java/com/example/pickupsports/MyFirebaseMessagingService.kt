@@ -13,8 +13,18 @@ import com.google.firebase.messaging.RemoteMessage
 
 const val channelId = "event_channel"
 const val channelName ="pickupsports"
+
+/**
+ * This class handles push notifications sent by firebase.
+ */
 class MyFirebaseMessagingService: FirebaseMessagingService() {
 
+    /*
+     * Much of this code is based on this tutorial:
+     * Android Push Notification Using Firebase Cloud Messaging in Kotlin
+     * https://www.youtube.com/watch?v=2xoJi-ZHmNI
+     * Accessed: November 23, 2022
+     */
     fun getRemoteView(title: String, message: String): RemoteViews {
         val remoteView = RemoteViews("com.example.pickupsports", R.layout.event_notification)
 
