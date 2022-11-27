@@ -1,16 +1,18 @@
 package com.example.pickupsports
 
 class User {
-    var name: String? = null
-    var email: String? = null
-    var uid: String? = null
+    var firstName: String? = null
+    var lastName: String? = null
+    var dob: String? = null
+    var phoneNumber: String? = null
 
     constructor(){}
 
-    constructor(name: String?, email: String?, uid: String?){
-        this.name = name
-        this.email = email
-        this.uid = uid
+    constructor(dob: String?, firstName: String?, lastName: String?, phoneNumber: String?){
+        this.dob = dob
+        this.firstName = firstName
+        this.lastName = lastName
+        this.phoneNumber = phoneNumber
     }
 
 }
