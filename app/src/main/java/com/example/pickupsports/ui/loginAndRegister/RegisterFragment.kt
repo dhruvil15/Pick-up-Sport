@@ -146,7 +146,7 @@ class RegisterFragment : Fragment() {
 
     fun validateFields(): Boolean {
         var validated = true
-        if(Patterns.EMAIL_ADDRESS.matcher(usernameEditText.text).matches()) {
+        if(!Patterns.EMAIL_ADDRESS.matcher(usernameEditText.text).matches()) {
             usernameEditText.error = "Valid email is required"
             validated = false
         }
@@ -154,7 +154,7 @@ class RegisterFragment : Fragment() {
             passwordEditText.error = "Minimum of 6 characters"
             validated = false
         }
-        if(Patterns.PHONE.matcher(phoneNumberText.text).matches()) {
+        if(!Patterns.PHONE.matcher(phoneNumberText.text).matches()) {
             phoneNumberText.error = "Field is required"
             validated = false
         }
