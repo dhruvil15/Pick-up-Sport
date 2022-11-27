@@ -115,11 +115,20 @@ class RegisterFragment : Fragment() {
                     passwordEditText.text.toString()
                 ).addOnCompleteListener() { task ->
                     if (task.isSuccessful) {
-                        //Store additional user data to DB
+                        //Subscribe to event notification channel
                         notificationSetup()
+
+                        //Add user data to database
                         uploadUserData(fullName.text.toString(), phoneNumberText.text.toString(), dob.text.toString())
 
+                        //Inform user of registration success.
+                        Toast.makeText(
+                            context, "Successfully created account!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
                         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+
                     } else {
                         // If register fails, display a message to the user.
                         Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -144,6 +153,7 @@ class RegisterFragment : Fragment() {
         _binding = null
     }
 
+    //Check if each field is filled out correctly.
     fun validateFields(): Boolean {
         var validated = true
         if(!Patterns.EMAIL_ADDRESS.matcher(usernameEditText.text).matches()) {
@@ -169,6 +179,7 @@ class RegisterFragment : Fragment() {
         return validated
     }
 
+    //Create user object and store it in database
     fun uploadUserData(fullName: String, phoneNumber: String, dob: String) {
         val firstName: String = fullName.split(" ")[0]
         val lastName: String = fullName.split(" ")[1]
@@ -179,7 +190,8 @@ class RegisterFragment : Fragment() {
         userID?.let { database.child("users").child(it) }?.setValue(user)
     }
 
-    // Add FCM token so we can send notifications to specific users
+    // Opt-into push notifications for new events, don't need explicit user agreement as per
+    // developer guidelines
     private fun notificationSetup() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(
             OnCompleteListener { task ->
