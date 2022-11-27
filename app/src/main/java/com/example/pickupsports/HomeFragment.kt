@@ -47,11 +47,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
- /*       binding.addEventButton.setOnClickListener {
-            findNavController().navigate(R.id.action_HomeFragment_to_CreateEventFragment)
-        }*/
-        // float button: shortcut to create a event
-
         eventList = arrayListOf<Event>()
 
         val recylerView : RecyclerView = view.findViewById(R.id.eventRV)

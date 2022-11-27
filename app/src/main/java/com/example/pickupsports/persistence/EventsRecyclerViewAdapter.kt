@@ -56,7 +56,7 @@ class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapt
         val bundle = Bundle()
         bundle.putString("referer", "home")
         bundle.putString("eventId", event.eventId)
-        bundle.putString("userID", holder.userID.toString())
+        bundle.putString("ownerId", holder.userID.toString())
         holder.eventCard?.setOnClickListener {
             it.findNavController().navigate(R.id.action_HomeFragment_to_SummaryFragment, bundle)
         }

@@ -6,6 +6,7 @@ import android.content.ClipboardManager
 import android.content.ContentValues.TAG
 import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Bundle
+import android.renderscript.Sampler.Value
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,8 +16,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.pickupsports.databinding.FragmentSummaryBinding
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -41,7 +42,9 @@ class SummaryFragment : Fragment() {
     private lateinit var notice: String
     private lateinit var referer: String
     private lateinit var eventID: String
-    private lateinit var currentUser: String
+    private lateinit var eventOwnerID: String
+
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +68,9 @@ class SummaryFragment : Fragment() {
             .plus(arguments?.get("capacity").toString())
         level = arguments?.getString("level").toString()
         notice = arguments?.getString("notice").toString()
-        currentUser = arguments?.getString("userID").toString()
+        eventOwnerID = arguments?.getString("ownerID").toString()
+
+        auth = FirebaseAuth.getInstance()
 
         if (notice.equals("null")){
             notice = " "
@@ -146,8 +151,8 @@ class SummaryFragment : Fragment() {
                 it.findNavController()
                     .navigate(R.id.action_ModifyEvent_SummaryFragment_to_CreateEvent)
             } else {
-                database.child("participants").child(eventID).child(currentUser).get().addOnSuccessListener{
-                    database.child("participants").child(eventID).child(currentUser).removeValue()
+                database.child("participants").child(eventID).child(auth.currentUser!!.uid).get().addOnSuccessListener{
+                    database.child("participants").child(eventID).child(auth.currentUser!!.uid).removeValue()
                 }
 
                 it.findNavController()
@@ -175,41 +180,21 @@ class SummaryFragment : Fragment() {
     // check if the current user enters a summary page that the user is the host(owner)
     // take in the userID and check against the db
     private fun isOwner(userID: String): Boolean {
-        var check = false
-        var finish = false
+        return userID == auth.currentUser?.uid
+    }
 
-        /*while (!finish){
-            eventID?.let{
-                database.child("events").child(eventID).child("owner").get().addOnSuccessListener{
-
-                    val ownerDob = it.child("dob").value.toString()
-                    val ownerLastName = it.child("lastName").value.toString()
-                    val ownerFirstName = it.child("firstName").value.toString()
-                    val ownerPhoneNumber = it.child("phoneNumber").value.toString()
-
-                      userID?.let{
-                        database.child("users").child(userID).get().addOnSuccessListener {
-
-                            val currentDob = it.child("dob").value.toString()
-                            val currentLastName = it.child("lastName").value.toString()
-                            val currentFirstName = it.child("firstName").value.toString()
-                            val currentPhoneNumber = it.child("phoneNumber").value.toString()
-
-                            if ((ownerDob == currentDob) &&
-                                (ownerLastName == currentLastName) &&
-                                (ownerFirstName == currentFirstName) &&
-                                (ownerPhoneNumber == currentPhoneNumber)
-                            ){
-                                check = true
-                            }
-
-                            finish = true
-                        }
+    private fun checkParticipant(userID: String) {
+        database.child("participants/$eventID/${auth.currentUser?.uid}")
+            .addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        //Change UI here
                     }
                 }
-            }
-        }*/
 
-        return check
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("Summary", "Failure checking as participant")
+                }
+            })
     }
 }
