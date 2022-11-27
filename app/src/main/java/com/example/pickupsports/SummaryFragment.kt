@@ -6,7 +6,6 @@ import android.content.ClipboardManager
 import android.content.ContentValues.TAG
 import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Bundle
-import android.renderscript.Sampler.Value
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +15,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.pickupsports.databinding.FragmentSummaryBinding
+import com.example.pickupsports.model.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
@@ -26,7 +26,7 @@ import com.google.firebase.ktx.Firebase
  * create an instance of this fragment.
  */
 class SummaryFragment : Fragment() {
-    private var _binding: FragmentSummaryBinding? = null;
+    private var _binding: FragmentSummaryBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -74,9 +74,9 @@ class SummaryFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
 
         // change ui upon user identity
-        checkParticipant(auth.currentUser!!.uid)
+        checkParticipant()
 
-        if (notice.equals("null")){
+        if (notice.equals("null")) {
             notice = " "
         }
 
@@ -154,13 +154,47 @@ class SummaryFragment : Fragment() {
             ) {
                 it.findNavController()
                     .navigate(R.id.action_ModifyEvent_SummaryFragment_to_CreateEvent)
-            } else {
-                database.child("participants").child(eventID).child(auth.currentUser!!.uid).get().addOnSuccessListener{
-                    database.child("participants").child(eventID).child(auth.currentUser!!.uid).removeValue()
-                }
+            } else if ((binding.updateQuitBtn.text as String).equals(
+                    "QUIT",
+                    true
+                )
+            ) {
+                database.child("participants").child(eventID).child(auth.currentUser!!.uid).get()
+                    .addOnSuccessListener {
+                        database.child("participants").child(eventID).child(auth.currentUser!!.uid)
+                            .removeValue()
+                    }
 
                 it.findNavController()
                     .navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
+            } else if ((binding.updateQuitBtn.text as String).equals(
+                    "JOIN",
+                    true
+                )
+            ) {
+                // join an event
+                val userID = auth.currentUser?.uid
+                userID?.let { it ->
+                    database.child("users").child(it).get().addOnSuccessListener {
+
+                        //create User object for save
+                        val owner = UserData(
+                            it.child("phoneNumber").value.toString(),
+                            it.child("firstName").value.toString(),
+                            it.child("lastName").value.toString(),
+                            it.child("dob").value.toString()
+                        )
+
+                        //add current user to the participants
+                        database.child("participants").child(eventID).child(userID).setValue(owner)
+                        Toast.makeText(activity, "Event Joined\nNew event added tp the future event list!", Toast.LENGTH_LONG).show()
+                        // TODO: add the event to the upcoming event page
+                    }
+                }
+                // go back to the home page
+                it.findNavController().navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
+            } else {
+                Log.e("SummaryFrag", "Update/Join/Quit button")
             }
         }
 
@@ -188,16 +222,19 @@ class SummaryFragment : Fragment() {
         return userID == auth.currentUser?.uid
     }
 
-    private fun checkParticipant(userID: String) {
+    /**
+     * check if the current user is in the viewing event
+     */
+    private fun checkParticipant() {
         Log.d("event ID ", eventID)
         Log.d("curr user: ", auth.currentUser?.uid.toString())
         database.child("participants/$eventID/${auth.currentUser?.uid}")
-            .addListenerForSingleValueEvent(object: ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     Log.d("curr user: ", snapshot.exists().toString())
                     if (snapshot.exists()) {
                         //Change UI here
-                        binding.updateQuitBtn.text =  if (isOwner(eventOwnerID)) "UPDATE" else "QUIT"
+                        binding.updateQuitBtn.text = if (isOwner(eventOwnerID)) "UPDATE" else "QUIT"
                     } else {
                         binding.updateQuitBtn.text = "JOIN"
                     }
