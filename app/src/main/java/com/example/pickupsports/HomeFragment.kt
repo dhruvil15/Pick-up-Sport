@@ -4,10 +4,9 @@ import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +19,8 @@ import com.example.pickupsports.model.UserData
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -29,9 +30,25 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
 
     private lateinit var dbref: DatabaseReference
+
     private lateinit var eventList: ArrayList<Event>
+    private lateinit var recylerView : RecyclerView
+
+    /**
+     * Part of the Search and Filter Feature - incomplete
+     */
+//    private lateinit var tempEventList: ArrayList<Event>
+
     // This property is only valid between onCreateView and
     private val binding get() = _binding!!
+
+    /**
+     * Part of the Search and Filter Feature - incomplete
+     */
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setHasOptionsMenu(true)
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,8 +65,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         eventList = arrayListOf<Event>()
+//        tempEventList = arrayListOf<Event>()
 
-        val recylerView : RecyclerView = view.findViewById(R.id.eventRV)
+        recylerView = view.findViewById(R.id.eventRV)
         recylerView.layoutManager = LinearLayoutManager(activity)
 
         val recyclerViewAdapter = EventsRecyclerViewAdapter()
@@ -57,6 +75,42 @@ class HomeFragment : Fragment() {
         getEvents(recyclerViewAdapter)
         Log.i(TAG, "events: " + EventsStorage.events)
     }
+
+    /**
+     * Part of the Search and Filter Feature - incomplete
+     */
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        inflater.inflate(R.menu.menu_item, menu)
+//        super.onCreateOptionsMenu(menu, inflater)
+//
+//        val item = menu.findItem(R.id.search_action)
+//        val searchView = item.actionView as SearchView
+//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                TODO("Not yet implemented")
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                tempEventList.clear()
+//                val searchText = newText!!.lowercase(Locale.getDefault())
+//                if(searchText.isNotEmpty()){
+//                    eventList.forEach{
+//                        if(it.sportName!!.lowercase(Locale.getDefault()).contains(searchText)){
+//                            tempEventList.add(it)
+//                        }
+//                    }
+//                    recylerView.adapter!!.notifyDataSetChanged()
+//                }
+//                else{
+//                    tempEventList.clear()
+//                    tempEventList.addAll(eventList)
+//                    recylerView.adapter!!.notifyDataSetChanged()
+//                }
+//                return false
+//            }
+//
+//        })
+//    }
     // onDestroyView.
     override fun onDestroyView() {
         super.onDestroyView()
@@ -78,7 +132,13 @@ class HomeFragment : Fragment() {
                     for (eventSnapshot in snapshot.children) {
                         eventList.add(buildEvent(eventSnapshot))
                     }
+
+                    /**
+                     * Part of the Search and Filter Feature - incomplete
+                     */
+//                    tempEventList.addAll(eventList)
                     adapter.setEvents(eventList)
+
                 }
             }
 
@@ -86,7 +146,6 @@ class HomeFragment : Fragment() {
                 // do nothing
             }
         })
-
     }
 
     /**
