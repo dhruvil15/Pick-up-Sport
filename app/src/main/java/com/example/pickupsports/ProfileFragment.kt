@@ -84,6 +84,7 @@ class ProfileFragment : Fragment() {
         // logout
         logoutButton.setOnClickListener {
             findNavController().navigate(R.id.action_ProfileFragment_to_loginFragment)
+            auth.signOut()
             Toast.makeText(activity, "You are Logged Out!", Toast.LENGTH_LONG).show()
         }
 
