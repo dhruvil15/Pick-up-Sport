@@ -14,7 +14,7 @@ data class Event (
     val time: String? = null,
     val sportName: String? = null,
     val capacity: Int? = null,
-    val currentPlayer: Int? = null,
+    var currentPlayer: Int? = null,
     val levelOfPlay: String? = null,
     val notice: String? = null,
 )

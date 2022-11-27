@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.pickupsports.databinding.FragmentSummaryBinding
+import com.example.pickupsports.model.Event
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
@@ -196,5 +197,26 @@ class SummaryFragment : Fragment() {
                     Log.d("Summary", "Failure checking as participant")
                 }
             })
+    }
+
+    private fun joinEvent() {
+        database.child("events/${eventID}").addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var event: Event = snapshot.value as Event
+                if(event.capacity!! >= (event.currentPlayer?.plus(1) ?: 0)) {
+                    event.currentPlayer = event.currentPlayer?.plus(1)
+                }
+
+                database.child("participants/${eventID}").child("${auth.currentUser?.uid}")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
+
+
     }
 }
