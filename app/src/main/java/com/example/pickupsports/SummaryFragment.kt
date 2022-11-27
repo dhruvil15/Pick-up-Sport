@@ -152,8 +152,13 @@ class SummaryFragment : Fragment() {
                     true
                 )
             ) {
+                val bundle = Bundle()
+                bundle.putString("mode", "update")
+                bundle.putString("eventID", eventID)
+
                 it.findNavController()
-                    .navigate(R.id.action_ModifyEvent_SummaryFragment_to_CreateEvent)
+                    .navigate(R.id.action_ModifyEvent_SummaryFragment_to_CreateEvent, bundle)
+
             } else if ((binding.updateQuitBtn.text as String).equals(
                     "QUIT",
                     true
@@ -164,6 +169,8 @@ class SummaryFragment : Fragment() {
                         database.child("participants").child(eventID).child(auth.currentUser!!.uid)
                             .removeValue()
                     }
+// TODO: remove the event from the upcoming event page
+                Toast.makeText(activity, "Event quit successfully!", Toast.LENGTH_LONG).show()
 
                 it.findNavController()
                     .navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
@@ -187,12 +194,17 @@ class SummaryFragment : Fragment() {
 
                         //add current user to the participants
                         database.child("participants").child(eventID).child(userID).setValue(owner)
-                        Toast.makeText(activity, "Event Joined\nNew event added tp the future event list!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            activity,
+                            "Event Joined\nNew event added tp the future event list!",
+                            Toast.LENGTH_LONG
+                        ).show()
                         // TODO: add the event to the upcoming event page
                     }
                 }
                 // go back to the home page
-                it.findNavController().navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
+                it.findNavController()
+                    .navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
             } else {
                 Log.e("SummaryFrag", "Update/Join/Quit button")
             }
