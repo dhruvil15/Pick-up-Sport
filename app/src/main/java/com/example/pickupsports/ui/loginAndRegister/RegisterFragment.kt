@@ -117,7 +117,7 @@ class RegisterFragment : Fragment() {
                     if (task.isSuccessful) {
                         //Store additional user data to DB
                         notificationSetup()
-                        uploadUserData(fullName.toString(), phoneNumberText.toString(), dob.toString())
+                        uploadUserData(fullName.text.toString(), phoneNumberText.text.toString(), dob.text.toString())
 
                         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                     } else {
@@ -172,6 +172,7 @@ class RegisterFragment : Fragment() {
     fun uploadUserData(fullName: String, phoneNumber: String, dob: String) {
         val firstName: String = fullName.split(" ")[0]
         val lastName: String = fullName.split(" ")[1]
+        Log.d(TAG, "userdata: PH:$phoneNumber FN:$firstName LN:$lastName DOB:$dob")
 
         val user = UserData(phoneNumber, firstName, lastName, dob)
         val userID = auth.currentUser?.uid
