@@ -1,4 +1,4 @@
-package com.example.pickupsports.ui.loginAndRegister
+package com.example.pickupsports.model
 
 import com.google.firebase.database.IgnoreExtraProperties
 

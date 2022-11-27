@@ -11,7 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.pickupsports.databinding.FragmentEditProfileBinding
-import com.example.pickupsports.ui.loginAndRegister.UserData
+import com.example.pickupsports.model.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database

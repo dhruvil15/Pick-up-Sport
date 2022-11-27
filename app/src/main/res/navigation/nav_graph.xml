@@ -12,7 +12,10 @@
         android:label="@string/home_fragment_label"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_HomeFragment_to_CreateEventFragment"
+            android:id="@+id/action_HomeFragment_to_SummaryFragment"
+            app:destination="@id/SummaryFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_CreateEvent"
             app:destination="@id/CreateEvent" />
         <action
             android:id="@+id/action_HomeFragment_to_profileFragment"
@@ -33,7 +36,10 @@
         android:label="@string/create_event_fragment_label"
         tools:layout="@layout/fragment_create_event">
         <action
-            android:id="@+id/action_CreateEventFragment_to_HomeFragment"
+            android:id="@+id/action_CreateEvent_to_summaryFragment"
+            app:destination="@id/SummaryFragment" />
+        <action
+            android:id="@+id/action_Cancel_Create_to_HomeFragment"
             app:destination="@id/HomeFragment" />
     </fragment>
 
@@ -61,6 +67,31 @@
             app:destination="@id/HomeFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/SummaryFragment"
+        android:name="com.example.pickupsports.SummaryFragment"
+        android:label="fragment_summary"
+        tools:layout="@layout/fragment_summary" >
+        <argument
+            android:name="referer"
+            android:defaultValue="create"
+            app:argType="string"
+            />
+        <action
+            android:id="@+id/action_ModifyEvent_SummaryFragment_to_CreateEvent"
+            app:destination="@id/CreateEvent" />
+        <action
+            android:id="@+id/action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
+        <argument
+            android:name="eventId"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
+            android:name="ownerId"
+            android:defaultValue=""
+            app:argType="string"/>
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
