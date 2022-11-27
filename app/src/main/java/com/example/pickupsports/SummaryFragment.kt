@@ -228,6 +228,7 @@ class SummaryFragment : Fragment() {
     private fun checkParticipant() {
         Log.d("event ID ", eventID)
         Log.d("curr user: ", auth.currentUser?.uid.toString())
+        Log.d("owner id: ", eventOwnerID)
         database.child("participants/$eventID/${auth.currentUser?.uid}")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
