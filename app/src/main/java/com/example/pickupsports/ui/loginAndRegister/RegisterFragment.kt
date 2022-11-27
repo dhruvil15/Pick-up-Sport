@@ -172,7 +172,7 @@ class RegisterFragment : Fragment() {
         val firstName: String = fullName.split(" ")[0]
         val lastName: String = fullName.split(" ")[1]
 
-        val user = UserData(phoneNumber, firstName, lastName, dob)
+        val user = UserData(phoneNumber, firstName, lastName, dob, auth.currentUser?.uid)
         val userID = auth.currentUser?.uid
         userID?.let { database.child("users").child(it) }?.setValue(user)
     }

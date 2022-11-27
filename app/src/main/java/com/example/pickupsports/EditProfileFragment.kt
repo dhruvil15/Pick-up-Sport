@@ -156,7 +156,7 @@ class EditProfileFragment : Fragment() {
         val firstName: String = fullName.split(" ")[0]
         val lastName: String = fullName.split(" ")[1]
 
-        val user = UserData(phoneNumber, firstName, lastName, dob)
+        val user = UserData(phoneNumber, firstName, lastName, dob, auth.currentUser?.uid)
         val userID = auth.currentUser?.uid
         auth.currentUser?.updateEmail(usernameEditText.text.toString())
         auth.currentUser?.updatePassword(passwordEditText.text.toString())

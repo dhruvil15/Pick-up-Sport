@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +53,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
     private lateinit var auth: FirebaseAuth
     private lateinit var eventID: String
 
+    private lateinit var mode: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,6 +65,8 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         auth = FirebaseAuth.getInstance()
         database = Firebase.database.reference
 
+        mode = arguments?.getString("mode").toString()
+        Log.d("Create Mode", mode)
         return binding.root
 
     }
@@ -323,7 +327,8 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                     it.child("phoneNumber").value.toString(),
                     it.child("firstName").value.toString(),
                     it.child("lastName").value.toString(),
-                    it.child("dob").value.toString()
+                    it.child("dob").value.toString(),
+                    auth.currentUser?.uid
                 )
 
                 //create event object for save
