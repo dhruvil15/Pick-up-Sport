@@ -88,6 +88,10 @@
             android:name="eventId"
             android:defaultValue=""
             app:argType="string" />
+        <argument
+            android:name="ownerId"
+            android:defaultValue=""
+            app:argType="string"/>
     </fragment>
     <fragment
         android:id="@+id/profileFragment"

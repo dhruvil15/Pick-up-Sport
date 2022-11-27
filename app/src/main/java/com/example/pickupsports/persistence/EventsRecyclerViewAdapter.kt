@@ -1,7 +1,9 @@
 package com.example.pickupsports.persistence
 
+import android.content.ContentValues.TAG
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +17,8 @@ import com.example.pickupsports.model.Event
 import com.example.pickupsports.model.UserData
 import com.firebase.ui.auth.data.model.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapter.EventListItem>() {
     private var events = emptyList<Event>()
@@ -56,7 +60,12 @@ class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapt
         val bundle = Bundle()
         bundle.putString("referer", "home")
         bundle.putString("eventId", event.eventId)
-        bundle.putString("ownerId", holder.userID.toString())
+
+
+        Firebase.database.reference.child("events").child(event.eventId.toString()).child("owner").child("uid").get().addOnSuccessListener {
+            bundle.putString("ownerId", it.value.toString())
+        }
+
         holder.eventCard?.setOnClickListener {
             it.findNavController().navigate(R.id.action_HomeFragment_to_SummaryFragment, bundle)
         }
