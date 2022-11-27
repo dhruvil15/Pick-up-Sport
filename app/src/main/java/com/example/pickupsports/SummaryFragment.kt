@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.pickupsports.databinding.FragmentSummaryBinding
+import com.example.pickupsports.model.Event
 import com.example.pickupsports.model.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
