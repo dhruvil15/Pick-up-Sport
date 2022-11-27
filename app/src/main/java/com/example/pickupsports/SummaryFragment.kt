@@ -68,9 +68,13 @@ class SummaryFragment : Fragment() {
             .plus(arguments?.get("capacity").toString())
         level = arguments?.getString("level").toString()
         notice = arguments?.getString("notice").toString()
-        eventOwnerID = arguments?.getString("ownerID").toString()
+        eventOwnerID = arguments?.getString("ownerId").toString()
+
 
         auth = FirebaseAuth.getInstance()
+
+        // change ui upon user identity
+        checkParticipant(auth.currentUser!!.uid)
 
         if (notice.equals("null")){
             notice = " "
@@ -180,15 +184,21 @@ class SummaryFragment : Fragment() {
     // check if the current user enters a summary page that the user is the host(owner)
     // take in the userID and check against the db
     private fun isOwner(userID: String): Boolean {
+        Log.d("User ID: ", "user id: " + userID)
         return userID == auth.currentUser?.uid
     }
 
     private fun checkParticipant(userID: String) {
-        database.child("participants/$eventID/${auth.currentUser?.uid}")
+
+        database.child("participants/$eventID/${auth.currentUser?.uid.toString()}")
             .addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
+                    Log.d("curr user: ", snapshot.exists().toString())
+                    if (true) {
                         //Change UI here
+                        binding.updateQuitBtn.text =  if (isOwner(eventOwnerID)) "UPDATE" else "QUIT"
+                    } else {
+                        binding.updateQuitBtn.text = "JOIN"
                     }
                 }
 

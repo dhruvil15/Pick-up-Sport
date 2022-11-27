@@ -1,7 +1,9 @@
 package com.example.pickupsports.persistence
 
+import android.content.ContentValues.TAG
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,6 +59,7 @@ class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapt
         bundle.putString("referer", "home")
         bundle.putString("eventId", event.eventId)
         bundle.putString("ownerId", holder.userID.toString())
+
         holder.eventCard?.setOnClickListener {
             it.findNavController().navigate(R.id.action_HomeFragment_to_SummaryFragment, bundle)
         }
