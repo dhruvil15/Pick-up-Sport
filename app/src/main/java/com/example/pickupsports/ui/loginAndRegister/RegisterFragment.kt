@@ -13,12 +13,20 @@ import androidx.navigation.fragment.findNavController
 import com.example.pickupsports.R
 
 import com.example.pickupsports.databinding.FragmentRegisterBinding
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.ktx.messaging
 import java.util.*
 
+
+/**
+ * Fragment for creating new users with Firebase Auth and storing additional
+ * user fields in realtime database
+ */
 class RegisterFragment : Fragment() {
     private var TAG: String = "Register"
     private var _binding: FragmentRegisterBinding? = null
@@ -31,8 +39,6 @@ class RegisterFragment : Fragment() {
     private lateinit var dob: EditText
     private lateinit var fullName: EditText
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,21 +106,17 @@ class RegisterFragment : Fragment() {
 
 
         registerButton.setOnClickListener {
-            Log.d(TAG, "Vro")
             if(validateFields()) {
+                //Create new account with Firebase Auth
                 auth.createUserWithEmailAndPassword(
                     usernameEditText.text.toString(),
                     passwordEditText.text.toString()
                 ).addOnCompleteListener() { task ->
                     if (task.isSuccessful) {
+                        //Store additional user data to DB
+                        notificationSetup()
+                        uploadUserData(fullName.toString(), phoneButton.toString(), dob.toString())
 
-                        uploadUserData(
-                            fullName.text.toString(),
-                            phoneButton.text.toString(),
-                            dob.text.toString()
-                        )
-                        // Register success
-                        Log.d(TAG, "createUserWithEmail:success")
                         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                     } else {
                         // If register fails, display a message to the user.
@@ -174,4 +176,23 @@ class RegisterFragment : Fragment() {
         userID?.let { database.child("users").child(it) }?.setValue(user)
     }
 
+    // Add FCM token so we can send notifications to specific users
+    private fun notificationSetup() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(
+            OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            Firebase.messaging.subscribeToTopic("events")
+                .addOnCompleteListener { task ->
+                    var msg = "Subscribed"
+                    if (!task.isSuccessful) {
+                        msg = "Subscribe failed"
+                    }
+                    Log.d(TAG, msg)
+                }
+        })
+    }
 }
