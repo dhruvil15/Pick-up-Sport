@@ -41,6 +41,14 @@
         <action
             android:id="@+id/action_Cancel_Create_to_HomeFragment"
             app:destination="@id/HomeFragment" />
+        <argument
+            android:name="mode"
+            android:defaultValue="create"
+            app:argType="string"/>
+        <argument
+            android:name="eventID"
+            android:defaultValue=""
+            app:argType="string"/>
     </fragment>
 
     <fragment
@@ -100,6 +108,9 @@
         <action
             android:id="@+id/action_profileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_ProfileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"

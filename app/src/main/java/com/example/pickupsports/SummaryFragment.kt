@@ -152,11 +152,12 @@ class SummaryFragment : Fragment() {
                     true
                 )
             ) {
-
-                Toast.makeText(activity, "Event Updated!", Toast.LENGTH_LONG).show()
+                val bundle = Bundle()
+                bundle.putString("mode", "update")
+                bundle.putString("eventID", eventID)
 
                 it.findNavController()
-                    .navigate(R.id.action_ModifyEvent_SummaryFragment_to_CreateEvent)
+                    .navigate(R.id.action_ModifyEvent_SummaryFragment_to_CreateEvent, bundle)
             } else if ((binding.updateQuitBtn.text as String).equals(
                     "QUIT",
                     true
@@ -167,6 +168,7 @@ class SummaryFragment : Fragment() {
                         database.child("participants").child(eventID).child(auth.currentUser!!.uid)
                             .removeValue()
                     }
+                // TODO: remove the event from the upcoming event page
                 Toast.makeText(activity, "Event quit successfully!", Toast.LENGTH_LONG).show()
                 it.findNavController()
                     .navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)

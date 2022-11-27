@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.pickupsports.databinding.FragmentProfileBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -61,11 +62,12 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         emailTextView = binding.email
-        passwordTextView = binding.password
+        //passwordTextView = binding.password
         phoneButton = binding.phoneNumber
         dob = binding.dateOfBirth
         fullName = binding.name
         val loginButton = binding.editProfileBtn
+        val logoutButton = binding.logoutBtn
         database.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 getUserData()
@@ -79,6 +81,13 @@ class ProfileFragment : Fragment() {
         loginButton.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
         }
+
+        // logout
+        logoutButton.setOnClickListener {
+            findNavController().navigate(R.id.action_ProfileFragment_to_loginFragment)
+            Toast.makeText(activity, "You are Logged Out!", Toast.LENGTH_LONG).show()
+        }
+
     }
 
     override fun onDestroyView() {
@@ -105,7 +114,7 @@ class ProfileFragment : Fragment() {
 
     private fun setUserData() {
         emailTextView.text = auth.currentUser!!.email.toString()
-        passwordTextView.text = "**********"
+        //passwordTextView.text = "**********"
         phoneButton.text = userPhoneNumber
         dob.text = userDob
         fullName.text = userName
