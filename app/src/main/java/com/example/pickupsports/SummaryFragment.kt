@@ -59,7 +59,7 @@ class SummaryFragment : Fragment() {
         referer = arguments?.getString("referer").toString()
 
         //get created event information entered by the user
-        eventID = arguments?.getString("lastEvent").toString()
+        eventID = arguments?.getString("eventId").toString()
         eventName = arguments?.getString("eventName").toString()
         time = arguments?.getString("time").toString().plus(", ")
             .plus(arguments?.getString("date").toString())
@@ -189,12 +189,13 @@ class SummaryFragment : Fragment() {
     }
 
     private fun checkParticipant(userID: String) {
-
-        database.child("participants/$eventID/${auth.currentUser?.uid.toString()}")
+        Log.d("event ID ", eventID)
+        Log.d("curr user: ", auth.currentUser?.uid.toString())
+        database.child("participants/$eventID/${auth.currentUser?.uid}")
             .addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     Log.d("curr user: ", snapshot.exists().toString())
-                    if (true) {
+                    if (snapshot.exists()) {
                         //Change UI here
                         binding.updateQuitBtn.text =  if (isOwner(eventOwnerID)) "UPDATE" else "QUIT"
                     } else {
