@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -47,10 +47,10 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+ /*       binding.addEventButton.setOnClickListener {
+            findNavController().navigate(R.id.action_HomeFragment_to_CreateEventFragment)
+        }*/
         // float button: shortcut to create a event
-        binding.addEventButton.setOnClickListener {
-            findNavController().navigate(R.id.action_HomeFragment_to_CreateEvent)
-        }
 
         eventList = arrayListOf<Event>()
 

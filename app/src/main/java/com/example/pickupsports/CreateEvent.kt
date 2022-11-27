@@ -73,7 +73,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         vacancyFrameInput = binding.createFrameInput
         totalNumberFrameInput = binding.createFrameInput2
 
-        mGeocoder = Geocoder(this.context)
+        mGeocoder = Geocoder(requireContext())
 
         /**
         * dropdown menu
@@ -164,7 +164,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                  * https://www.javatpoint.com/android-google-map-search-location-using-geocodr
                  * */
                 try {
-                    addressList = mGeocoder.getFromLocationName(location.toString(), 1)
+                    addressList = mGeocoder.getFromLocationName(location.toString(), 1) as List<Address>
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }

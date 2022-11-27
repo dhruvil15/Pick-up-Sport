@@ -1,36 +1,29 @@
-package com.example.pickupsports.ui.loginAndRegister
+package com.example.pickupsports
 
 import android.app.DatePickerDialog
-import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import com.example.pickupsports.R
-
-import com.example.pickupsports.databinding.FragmentRegisterBinding
+import com.example.pickupsports.databinding.FragmentEditProfileBinding
 import com.example.pickupsports.model.UserData
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.ktx.messaging
 import java.util.*
 
-
 /**
- * Fragment for creating new users with Firebase Auth and storing additional
- * user fields in realtime database
+ * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class RegisterFragment : Fragment() {
-    private var TAG: String = "Register"
-    private var _binding: FragmentRegisterBinding? = null
+class EditProfileFragment : Fragment() {
+    private var TAG: String = "EditProfile"
+    private var _binding: FragmentEditProfileBinding? = null
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
 
@@ -40,6 +33,8 @@ class RegisterFragment : Fragment() {
     private lateinit var dob: EditText
     private lateinit var fullName: EditText
 
+    // This property is only valid between onCreateView and
+    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +48,7 @@ class RegisterFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -61,14 +56,13 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        usernameEditText = binding.username
+        usernameEditText = binding.email
         passwordEditText = binding.password
         phoneButton = binding.phoneNumber
         dob = binding.dateOfBirth
         fullName = binding.name
 
-        val registerButton = binding.register
-        val loginButton = binding.backToLogin
+        val loginButton = binding.register
 
         //https://www.geeksforgeeks.org/how-to-popup-datepicker-while-clicking-on-edittext-in-android/
         dob.setOnClickListener {
@@ -105,37 +99,27 @@ class RegisterFragment : Fragment() {
             datePickerDialog.show()
         }
 
-
-        registerButton.setOnClickListener {
+        loginButton.setOnClickListener {
+            Log.d(TAG, "onClickListener works")
             if(validateFields()) {
-                //Create new account with Firebase Auth
-                auth.createUserWithEmailAndPassword(
-                    usernameEditText.text.toString(),
-                    passwordEditText.text.toString()
-                ).addOnCompleteListener() { task ->
-                    if (task.isSuccessful) {
-                        //Store additional user data to DB
-                        notificationSetup()
-                        uploadUserData(fullName.toString(), phoneButton.toString(), dob.toString())
+                updateUserData(
+                    fullName.text.toString(),
+                    phoneButton.text.toString(),
+                    dob.text.toString()
+                )
 
-                        findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-                    } else {
-                        // If register fails, display a message to the user.
-                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                        Toast.makeText(
-                            activity, "Registration failed.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
+                // Register success
+                Log.d(TAG, "UpdateUserWithEmail:success")
+                findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
+            } else {
+                // If register fails, display a message to the user.
+                Log.w(TAG, "UpdateUserWithEmail:failure")
+                Toast.makeText(
+                    activity, "Update failed.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
-
-        loginButton.setOnClickListener {
-            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-        }
-
-
     }
 
     override fun onDestroyView() {
@@ -143,7 +127,7 @@ class RegisterFragment : Fragment() {
         _binding = null
     }
 
-    fun validateFields(): Boolean {
+    private fun validateFields(): Boolean {
         var validated = true
         if(usernameEditText.length() == 0) {
             usernameEditText.error = "Field is required"
@@ -168,32 +152,16 @@ class RegisterFragment : Fragment() {
         return validated
     }
 
-    fun uploadUserData(fullName: String, phoneNumber: String, dob: String) {
+    private fun updateUserData(fullName: String, phoneNumber: String, dob: String) {
         val firstName: String = fullName.split(" ")[0]
         val lastName: String = fullName.split(" ")[1]
 
         val user = UserData(phoneNumber, firstName, lastName, dob)
         val userID = auth.currentUser?.uid
-        userID?.let { database.child("users").child(it) }?.setValue(user)
+        auth.currentUser?.updateEmail(usernameEditText.text.toString())
+        auth.currentUser?.updatePassword(passwordEditText.text.toString())
+        userID?.let { database.child("users").child(userID) }?.setValue(user)
+        Log.w(TAG, "email:${usernameEditText.text} pass:${passwordEditText.text}")
     }
 
-    // Add FCM token so we can send notifications to specific users
-    private fun notificationSetup() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(
-            OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            Firebase.messaging.subscribeToTopic("events")
-                .addOnCompleteListener { task ->
-                    var msg = "Subscribed"
-                    if (!task.isSuccessful) {
-                        msg = "Subscribe failed"
-                    }
-                    Log.d(TAG, msg)
-                }
-        })
-    }
 }
