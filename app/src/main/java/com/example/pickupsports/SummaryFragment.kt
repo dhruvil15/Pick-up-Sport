@@ -165,7 +165,8 @@ class SummaryFragment : Fragment() {
                 )
             ) {
                 quitEvent(currentPlayers)
-                it.findNavController().navigate(R.id.HomeFragment)
+
+                it.findNavController().navigate(R.id.UpcomingFragment)
 
 
             } else if ((binding.updateQuitBtn.text as String).equals(
