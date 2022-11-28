@@ -19,7 +19,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 /**
- * A simple [Fragment] subclass as the default destination in the navigation.
+ * Profile fragment for viewing one's account data.
  */
 class ProfileFragment : Fragment() {
     private var TAG: String = "Profile"
