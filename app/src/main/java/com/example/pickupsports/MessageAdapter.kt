@@ -14,11 +14,14 @@ import com.google.firebase.ktx.Firebase
 class MessageAdapter(val context: Context, val messageList: ArrayList<chat>):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    //This is for showing two views of received message and the sent message into one view of chat
+    //getItemViewType() will decide which view to display properly
     val item_receive = 1
     val item_sent = 2
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
+        //Depending on which view, it will inflate it properly
         if(viewType == 1){
             val view: View = LayoutInflater.from(context).inflate(R.layout.receive, parent, false)
             return ReceiveViewHolder(view)
@@ -29,6 +32,7 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<chat>):
 
     }
 
+    //Bind the viewHolder and set the message accordingly
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currMessage = messageList[position]
         if(holder.javaClass == SentViewHolder::class.java){
@@ -46,6 +50,7 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<chat>):
         return messageList.size
     }
 
+    //Logic to choose which message is the sent and which one is the received, as it has different views
     override fun getItemViewType(position: Int): Int {
         val currMessage = messageList[position]
         if(FirebaseAuth.getInstance().currentUser?.uid.equals(currMessage.senderId)){
