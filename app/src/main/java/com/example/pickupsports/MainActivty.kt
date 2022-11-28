@@ -53,12 +53,14 @@ class MainActivty : AppCompatActivity() {
     }
 
     fun changeFragmentOnSelect(){
+        val bundle = Bundle()
+        bundle.putString("mode", "create")
         binding.bottomNavigationView.setOnItemSelectedListener {
 
             when(it.itemId){
                 R.id.home -> navController.navigate(R.id.HomeFragment)
                 R.id.message ->  navController.navigate(R.id.MessageFragment)
-                R.id.create -> navController.navigate(R.id.CreateEvent)
+                R.id.create -> navController.navigate(R.id.CreateEvent, bundle)
                 R.id.upcoming -> navController.navigate(R.id.UpcomingFragment)
                 R.id.acc -> navController.navigate(R.id.profileFragment)
 
