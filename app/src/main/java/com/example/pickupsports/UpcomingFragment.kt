@@ -85,7 +85,6 @@ class UpcomingFragment : Fragment() {
                                     eventList.add(buildEvent(eventSnapshot))
                                     adapter.setEvents(eventList)
                                 }
-
                             }
 
                             override fun onCancelled(error: DatabaseError) {
@@ -94,6 +93,7 @@ class UpcomingFragment : Fragment() {
 
                         })
                     }
+
                 }
             }
 

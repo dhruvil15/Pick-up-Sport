@@ -9,10 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -66,6 +63,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         database = Firebase.database.reference
 
         mode = arguments?.getString("mode").toString()
+        eventID = arguments?.getString("eventID").toString()
         Log.d("Create Mode", mode)
         return binding.root
 
@@ -318,7 +316,9 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         val userID = auth.currentUser?.uid
 
         //get the event ID
-        val eventID = database.child("events").push().key
+        if(eventID == null) {
+            eventID = database.child("events").push().key.toString()
+        }
 
          userID?.let { it ->
             database.child("users").child(it).get().addOnSuccessListener {
@@ -348,11 +348,8 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                 )
 
                 //store the event to the database, add current user to the participants
-                if (eventID != null) {
                     database.child("events").child(eventID).setValue(event)
                     database.child("participants").child(eventID).child(userID).setValue(owner)
-
-                }
 
             }
         }

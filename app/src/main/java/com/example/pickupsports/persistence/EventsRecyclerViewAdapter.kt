@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pickupsports.R
 import com.example.pickupsports.model.Event

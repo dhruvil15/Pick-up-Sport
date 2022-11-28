@@ -33,18 +33,21 @@ class Message : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //calling the db
         auth = FirebaseAuth.getInstance()
-
-
         mDbRef = FirebaseDatabase.getInstance().getReference()
 
+        //Initializing the arrayList and creating the userAdapter Object
         userList = ArrayList()
         adapter = UserAdapter(userList)
 
+        //Displaying the user's List
         userRecyclerView = view.findViewById(R.id.UserRecyclerView)
         userRecyclerView.layoutManager = LinearLayoutManager(this.context)
         userRecyclerView.adapter = adapter
 
+        //Adding the user into the arrayList form the users table from db
         mDbRef.child("users").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 userList.clear()
