@@ -316,7 +316,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
         android:layout_width="340dp"
-        android:layout_height="95dp"
+        android:layout_height="48dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="36dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -325,7 +325,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/create_input_notice"
             android:layout_width="match_parent"
-            android:layout_height="95dp"
+            android:layout_height="46dp"
             android:hint="@string/create_notice_hint"
             android:textAlignment="viewStart" />
     </com.google.android.material.textfield.TextInputLayout>
