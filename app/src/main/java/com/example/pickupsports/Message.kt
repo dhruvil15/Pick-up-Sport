@@ -50,9 +50,9 @@ class Message : Fragment() {
                 userList.clear()
                 for(postSnapshot in snapshot.children){
                     val currUser = postSnapshot.getValue(User::class.java)
-
-                    userList.add(currUser!!)
-
+                    if(currUser?.uid != auth.currentUser?.uid) {
+                        userList.add(currUser!!)
+                    }
                 }
                 adapter.notifyDataSetChanged()
             }

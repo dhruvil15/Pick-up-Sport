@@ -8,6 +8,6 @@ class chat {
 
     constructor(message: String?, senderId: String?){
         this.message = message
-        this.message = senderId
+        this.senderId = senderId
     }
 }
