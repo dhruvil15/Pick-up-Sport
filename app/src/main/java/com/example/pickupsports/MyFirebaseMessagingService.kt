@@ -47,7 +47,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         channelId)
             .setSmallIcon(R.drawable.app_logo)
             .setAutoCancel(true)
-            .setVibrate(longArrayOf(1000, 1000, 1000, 1000))
+            .setVibrate(longArrayOf(500, 500, 500, 500))
             .setOnlyAlertOnce(true)
             .setContentIntent(pendingIntent)
 
