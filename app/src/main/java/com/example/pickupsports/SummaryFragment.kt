@@ -146,7 +146,6 @@ class SummaryFragment : Fragment() {
 
         // quit(non-owner user) or update (owner user) action
         view.findViewById<Button>(R.id.update_quit_btn).setOnClickListener {
-            // TODO: implement update event
             if ((binding.updateQuitBtn.text as String).equals(
                     "UPDATE",
                     true
@@ -189,7 +188,8 @@ class SummaryFragment : Fragment() {
                             it.child("phoneNumber").value.toString(),
                             it.child("firstName").value.toString(),
                             it.child("lastName").value.toString(),
-                            it.child("dob").value.toString()
+                            it.child("dob").value.toString(),
+                            auth.currentUser?.uid
                         )
 
                         //add current user to the participants
