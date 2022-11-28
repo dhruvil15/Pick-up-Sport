@@ -238,7 +238,10 @@
         app:layout_constraintHorizontal_bias="0.229"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/summary_eventID_display"
-        app:layout_constraintVertical_bias="0.419" />
+        app:layout_constraintVertical_bias="0.419"
+        android:textColor="@color/black"
+        android:backgroundTint="#ccff00"
+        />
 
     <Button
         android:id="@+id/update_quit_btn"
@@ -246,6 +249,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="92dp"
         android:text="Update"
+        android:textColor="@color/black"
+        android:backgroundTint="#ccff00"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/back_btn"
         app:layout_constraintTop_toBottomOf="@+id/summary_eventID_display"
@@ -260,6 +265,8 @@
         android:text="COPY"
         android:textAlignment="center"
         android:textSize="8sp"
+        android:textColor="@color/black"
+        android:backgroundTint="#ccff00"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/summary_notification_title" />
