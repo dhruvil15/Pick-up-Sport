@@ -66,6 +66,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         database = Firebase.database.reference
 
         mode = arguments?.getString("mode").toString()
+        eventID = arguments?.getString("eventID").toString()
         Log.d("Create Mode", mode)
         return binding.root
 
@@ -318,7 +319,9 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         val userID = auth.currentUser?.uid
 
         //get the event ID
-        val eventID = database.child("events").push().key
+        if(eventID == null) {
+            eventID = database.child("events").push().key.toString()
+        }
 
          userID?.let { it ->
             database.child("users").child(it).get().addOnSuccessListener {
@@ -348,11 +351,9 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                 )
 
                 //store the event to the database, add current user to the participants
-                if (eventID != null) {
-                    database.child("events").child(eventID).setValue(event)
-                    database.child("participants").child(eventID).child(userID).setValue(owner)
+                database.child("events").child(eventID).setValue(event)
+                database.child("participants").child(eventID).child(userID).setValue(owner)
 
-                }
 
             }
         }
