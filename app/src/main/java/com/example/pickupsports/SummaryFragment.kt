@@ -137,8 +137,7 @@ class SummaryFragment : Fragment() {
 
         // go back to home page
         view.findViewById<Button>(R.id.back_btn).setOnClickListener {
-            it.findNavController()
-                .navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
+            it.findNavController().popBackStack()
         }
 
         // copy event id
@@ -148,7 +147,6 @@ class SummaryFragment : Fragment() {
 
         // quit(non-owner user) or update (owner user) action
         view.findViewById<Button>(R.id.update_quit_btn).setOnClickListener {
-            // TODO: implement update event
             if ((binding.updateQuitBtn.text as String).equals(
                     "UPDATE",
                     true
@@ -167,6 +165,9 @@ class SummaryFragment : Fragment() {
                 )
             ) {
                 quitEvent(currentPlayers)
+                it.findNavController().navigate(R.id.HomeFragment)
+
+
             } else if ((binding.updateQuitBtn.text as String).equals(
                     "JOIN",
                     true
@@ -179,7 +180,7 @@ class SummaryFragment : Fragment() {
                     "Event Joined\nNew event added tp the future event list!",
                     Toast.LENGTH_LONG
                 ).show()
-
+                it.findNavController().popBackStack()
             } else {
                 Log.e("SummaryFrag", "Update/Join/Quit button")
             }
@@ -249,9 +250,6 @@ class SummaryFragment : Fragment() {
 
                             database.child("participants/${eventID}/").child(auth.currentUser!!.uid)
                                 .setValue(true)
-
-                            // go back to the home page
-                            findNavController().navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
                         } else {
                             Toast.makeText(requireContext(), "Event is full!", Toast.LENGTH_SHORT)
                         }
@@ -273,10 +271,7 @@ class SummaryFragment : Fragment() {
                         snapshot.ref.removeValue()
                         val newPlayerCount = currentCapacity.toInt() - 1
                         database.child("events/${eventID}/currentPlayer").setValue(newPlayerCount)
-
-                        findNavController().popBackStack()
                     }
-
                 }
 
                 override fun onCancelled(error: DatabaseError) {

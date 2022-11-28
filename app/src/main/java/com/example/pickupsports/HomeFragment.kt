@@ -72,7 +72,7 @@ class HomeFragment : Fragment() {
         dbref.addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
-
+                eventList.clear()
                 if (snapshot.exists()) {
 
                     for (eventSnapshot in snapshot.children) {
