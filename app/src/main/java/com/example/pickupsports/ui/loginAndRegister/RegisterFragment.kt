@@ -76,23 +76,19 @@ class RegisterFragment : Fragment() {
         // Accessed Nov 20, 2022
         dob.setOnClickListener {
 
-            val c = Calendar.getInstance()
+            val calendar = Calendar.getInstance()
 
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
 
             val datePickerDialog = DatePickerDialog(
-
                 requireContext(),
                 { _, birthYear, monthOfYear, dayOfMonth ->
                     val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + birthYear)
                     dob.setText(dat)
                 }, year, month, day
             )
-            // at last we are calling show
-            // to display our date picker dialog.
             datePickerDialog.show()
         }
 

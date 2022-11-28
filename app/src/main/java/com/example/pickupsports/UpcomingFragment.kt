@@ -19,10 +19,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -68,7 +64,7 @@ class UpcomingFragment : Fragment() {
     }
 
     /**
-     * get all exist events from db, return an ArrayList of events
+     * get all events that current user is registered as a participant in.
      */
     private fun getUpcomingEvents(adapter: EventsRecyclerViewAdapter) {
         dbref = FirebaseDatabase.getInstance().reference
@@ -88,7 +84,7 @@ class UpcomingFragment : Fragment() {
                             }
 
                             override fun onCancelled(error: DatabaseError) {
-                                TODO("Not yet implemented")
+                                // do nothing
                             }
 
                         })

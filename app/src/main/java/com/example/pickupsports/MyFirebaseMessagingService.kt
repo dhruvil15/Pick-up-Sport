@@ -20,7 +20,9 @@ const val channelName ="pickupsports"
 class MyFirebaseMessagingService: FirebaseMessagingService() {
 
     /*
-     * Much of this code is based on this tutorial:
+     * Much of this code is based on this tutorial.
+     * I had to follow the code very closely as I was not familiar with
+     * much of this functionality before.
      * Android Push Notification Using Firebase Cloud Messaging in Kotlin
      * https://www.youtube.com/watch?v=2xoJi-ZHmNI
      * Accessed: November 23, 2022
@@ -36,6 +38,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         return remoteView
     }
 
+    //Using notification builder to create android alert.
     fun generateNotification(title: String, message: String) {
         val intent = Intent(this, MainActivty::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -47,7 +50,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         channelId)
             .setSmallIcon(R.drawable.app_logo)
             .setAutoCancel(true)
-            .setVibrate(longArrayOf(1000, 1000, 1000, 1000))
+            .setVibrate(longArrayOf(500, 500, 500, 500))
             .setOnlyAlertOnce(true)
             .setContentIntent(pendingIntent)
 
