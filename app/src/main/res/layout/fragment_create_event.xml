@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".CreateEvent">
 
     <Button
@@ -117,7 +117,7 @@
     <EditText
         android:id="@+id/create_input_sport_name"
         android:layout_width="334dp"
-        android:layout_height="37dp"
+        android:layout_height="48dp"
         android:layout_marginStart="36dp"
         android:layout_marginEnd="36dp"
         android:ems="10"
@@ -130,8 +130,8 @@
 
     <EditText
         android:id="@+id/create_input_location"
-        android:layout_width="334dp"
-        android:layout_height="37dp"
+        android:layout_width="332dp"
+        android:layout_height="45dp"
         android:layout_marginStart="36dp"
         android:layout_marginEnd="36dp"
         android:ems="10"
@@ -204,8 +204,8 @@
 
     <Button
         android:id="@+id/create_save_btn"
-        android:layout_width="183dp"
-        android:layout_height="36dp"
+        android:layout_width="189dp"
+        android:layout_height="49dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="20dp"
         android:text="SAVE"
@@ -240,8 +240,8 @@
 
     <EditText
         android:id="@+id/create_input_date"
-        android:layout_width="146dp"
-        android:layout_height="37dp"
+        android:layout_width="152dp"
+        android:layout_height="46dp"
         android:layout_marginStart="36dp"
         android:ems="10"
         android:inputType="date"
@@ -251,15 +251,14 @@
 
     <EditText
         android:id="@+id/create_input_time"
-        android:layout_width="146dp"
-        android:layout_height="37dp"
+        android:layout_width="151dp"
+        android:layout_height="45dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="36dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.913"
         app:layout_constraintStart_toEndOf="@+id/create_input_date"
         app:layout_constraintTop_toBottomOf="@+id/create_time_hint" />
 
@@ -302,8 +301,8 @@
 
     <Spinner
         android:id="@+id/create_level_play"
-        android:layout_width="162dp"
-        android:layout_height="48dp"
+        android:layout_width="152dp"
+        android:layout_height="37dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="12dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -312,16 +311,16 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
         android:layout_width="340dp"
-        android:layout_height="120dp"
+        android:layout_height="95dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/create_title_notice">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/create_input_notice"
+            android:layout_width="match_parent"
+            android:layout_height="95dp"
             android:hint="@string/create_notice_hint"
             android:textAlignment="viewStart" />
     </com.google.android.material.textfield.TextInputLayout>

@@ -265,7 +265,7 @@ class SummaryFragment : Fragment() {
                         val newPlayerCount = currentCapacity.toInt() - 1
                         database.child("events/${eventID}/currentPlayer").setValue(newPlayerCount)
 
-                        findNavController().navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
+                        findNavController().popBackStack()
                     }
 
                 }

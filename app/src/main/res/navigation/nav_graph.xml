@@ -24,7 +24,7 @@
             android:id="@+id/action_HomeFragment_to_message2"
             app:destination="@id/MessageFragment" />
         <action
-            android:id="@+id/action_HomeFragment_to_upcoming2"
+            android:id="@+id/action_HomeFragment_to_upcomingFragment2"
             app:destination="@id/UpcomingFragment" />
 
     </fragment>
@@ -116,7 +116,7 @@
         tools:layout="@layout/fragment_message" />
     <fragment
         android:id="@+id/UpcomingFragment"
-        android:name="com.example.pickupsports.upcoming"
+        android:name="com.example.pickupsports.UpcomingFragment"
         android:label="fragment_upcoming"
         tools:layout="@layout/fragment_upcoming" />
 </navigation>
