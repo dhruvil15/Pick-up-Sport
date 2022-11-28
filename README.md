@@ -39,10 +39,10 @@
 **Link:** https://www.youtube.com/watch?v=8Pv96bvBJL4
 
 **Title:** Using date picker for birthdate
-**Date:** November 20, 2022
-**Link:** https://www.geeksforgeeks.org/how-to-popup-datepicker-while-clicking-on-edittext-in-android/
+**Date:** November 20, 2022  
+**Link:** https://www.geeksforgeeks.org/how-to-popup-datepicker-while-clicking-on-edittext-in-android/  
 
-**Title:** Android Push Notification Using Firebase Cloud Messaging in Kotlin
-**Date:** Accessed: November 23, 2022
+**Title:** Android Push Notification Using Firebase Cloud Messaging in Kotlin  
+**Date:** Accessed: November 23, 2022  
 **Link:** https://www.youtube.com/watch?v=2xoJi-ZHmNI
 
