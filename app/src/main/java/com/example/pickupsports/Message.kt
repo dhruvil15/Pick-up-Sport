@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 
@@ -16,7 +17,8 @@ class Message : Fragment() {
     private lateinit var userList: ArrayList<User>
     private lateinit var adapter: UserAdapter
     private lateinit var mDbRef: DatabaseReference
-    
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -31,6 +33,8 @@ class Message : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        auth = FirebaseAuth.getInstance()
+
 
         mDbRef = FirebaseDatabase.getInstance().getReference()
 
@@ -46,7 +50,9 @@ class Message : Fragment() {
                 userList.clear()
                 for(postSnapshot in snapshot.children){
                     val currUser = postSnapshot.getValue(User::class.java)
+
                     userList.add(currUser!!)
+
                 }
                 adapter.notifyDataSetChanged()
             }
