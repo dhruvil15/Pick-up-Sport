@@ -81,7 +81,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
          * Cited:
         * https://developer.android.com/develop/ui/views/components/spinner
         * */
-        val spinner: Spinner = view.findViewById(R.id.create_level_play)
+        val spinner: Spinner = binding.createLevelPlay
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             this.requireContext(),
@@ -201,7 +201,8 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
                     capacity,
                     currentPlayer,
                     levelOfPlay,
-                    notice
+                    notice,
+                    eventID
                 )
 
                 findNavController().navigate(R.id.action_CreateEvent_to_summaryFragment, bundle)
@@ -372,7 +373,8 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         capacity: Int,
         currentPlayer: Int,
         levelOfPlay: String,
-        notice : String
+        notice : String,
+        eventID: String
     ): Bundle{
 
         val bundle = Bundle()
@@ -385,6 +387,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         bundle.putInt("capacity", capacity)
         bundle.putInt("currentPlayer", currentPlayer)
         bundle.putString("notice", notice)
+        bundle.putString("eventId", eventID)
 
         return bundle
     }

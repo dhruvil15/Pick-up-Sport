@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +37,7 @@ class RegisterFragment : Fragment() {
 
     private lateinit var usernameEditText: EditText
     private lateinit var passwordEditText: EditText
-    private lateinit var phoneButton: EditText
+    private lateinit var phoneNumberText: EditText
     private lateinit var dob: EditText
     private lateinit var fullName: EditText
 
@@ -63,7 +64,7 @@ class RegisterFragment : Fragment() {
 
         usernameEditText = binding.username
         passwordEditText = binding.password
-        phoneButton = binding.phoneNumber
+        phoneNumberText = binding.phoneNumber
         dob = binding.dateOfBirth
         fullName = binding.name
 
@@ -114,11 +115,20 @@ class RegisterFragment : Fragment() {
                     passwordEditText.text.toString()
                 ).addOnCompleteListener() { task ->
                     if (task.isSuccessful) {
-                        //Store additional user data to DB
+                        //Subscribe to event notification channel
                         notificationSetup()
-                        uploadUserData(fullName.toString(), phoneButton.toString(), dob.toString())
+
+                        //Add user data to database
+                        uploadUserData(fullName.text.toString(), phoneNumberText.text.toString(), dob.text.toString())
+
+                        //Inform user of registration success.
+                        Toast.makeText(
+                            context, "Successfully created account!",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
                         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+
                     } else {
                         // If register fails, display a message to the user.
                         Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -143,18 +153,19 @@ class RegisterFragment : Fragment() {
         _binding = null
     }
 
+    //Check if each field is filled out correctly.
     fun validateFields(): Boolean {
         var validated = true
-        if(usernameEditText.length() == 0) {
-            usernameEditText.error = "Field is required"
+        if(!Patterns.EMAIL_ADDRESS.matcher(usernameEditText.text).matches()) {
+            usernameEditText.error = "Valid email is required"
             validated = false
         }
-        if(passwordEditText.length() == 0) {
-            passwordEditText.error = "Field is required"
+        if(passwordEditText.length() < 6) {
+            passwordEditText.error = "Minimum of 6 characters"
             validated = false
         }
-        if(phoneButton.length() == 0) {
-            phoneButton.error = "Field is required"
+        if(!Patterns.PHONE.matcher(phoneNumberText.text).matches()) {
+            phoneNumberText.error = "Field is required"
             validated = false
         }
         if(fullName.length() == 0) {
@@ -168,16 +179,19 @@ class RegisterFragment : Fragment() {
         return validated
     }
 
+    //Create user object and store it in database
     fun uploadUserData(fullName: String, phoneNumber: String, dob: String) {
         val firstName: String = fullName.split(" ")[0]
         val lastName: String = fullName.split(" ")[1]
+        Log.d(TAG, "userdata: PH:$phoneNumber FN:$firstName LN:$lastName DOB:$dob")
 
         val user = UserData(phoneNumber, firstName, lastName, dob, auth.currentUser?.uid)
         val userID = auth.currentUser?.uid
         userID?.let { database.child("users").child(it) }?.setValue(user)
     }
 
-    // Add FCM token so we can send notifications to specific users
+    // Opt-into push notifications for new events, don't need explicit user agreement as per
+    // developer guidelines
     private fun notificationSetup() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(
             OnCompleteListener { task ->

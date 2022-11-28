@@ -1,18 +1,18 @@
 package com.example.pickupsports
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pickupsports.databinding.ActivityMainActivtyBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 
 class MainActivty : AppCompatActivity() {
 
@@ -32,7 +32,6 @@ class MainActivty : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
         auth = FirebaseAuth.getInstance()
-
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 

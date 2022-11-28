@@ -67,7 +67,7 @@ class EventsRecyclerViewAdapter() : RecyclerView.Adapter<EventsRecyclerViewAdapt
         }
 
         holder.eventCard?.setOnClickListener {
-            it.findNavController().navigate(R.id.action_HomeFragment_to_SummaryFragment, bundle)
+            it.findNavController().navigate(R.id.SummaryFragment, bundle)
         }
     }
 

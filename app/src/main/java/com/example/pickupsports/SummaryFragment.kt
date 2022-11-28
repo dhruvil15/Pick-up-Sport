@@ -14,8 +14,8 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.pickupsports.databinding.FragmentSummaryBinding
-import com.example.pickupsports.model.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
@@ -37,6 +37,7 @@ class SummaryFragment : Fragment() {
     private lateinit var eventName: String
     private lateinit var time: String
     private lateinit var location: String
+    private lateinit var currentPlayers: String
     private lateinit var vacancy: String
     private lateinit var level: String
     private lateinit var notice: String
@@ -115,10 +116,11 @@ class SummaryFragment : Fragment() {
                     time = it.child("time").value.toString().plus(", ")
                         .plus(it.child("date").value.toString())
                     location = it.child("locationText").value.toString()
-                    vacancy = it.child("currentPlayer").value.toString().plus("/")
-                        .plus(it.child("capacity").value.toString())
+                    currentPlayers = it.child("currentPlayer").value.toString()
+                    vacancy = currentPlayers.plus("/").plus(it.child("capacity").value.toString())
                     level = it.child("levelOfPlay").value.toString()
                     notice = it.child("notice").value.toString()
+
 
                     binding.summaryEventDisplay.text = eventName
                     binding.summaryTimeDisplay.text = time
@@ -146,6 +148,7 @@ class SummaryFragment : Fragment() {
 
         // quit(non-owner user) or update (owner user) action
         view.findViewById<Button>(R.id.update_quit_btn).setOnClickListener {
+            // TODO: implement update event
             if ((binding.updateQuitBtn.text as String).equals(
                     "UPDATE",
                     true
@@ -163,48 +166,20 @@ class SummaryFragment : Fragment() {
                     true
                 )
             ) {
-                database.child("participants").child(eventID).child(auth.currentUser!!.uid).get()
-                    .addOnSuccessListener {
-                        database.child("participants").child(eventID).child(auth.currentUser!!.uid)
-                            .removeValue()
-                    }
-// TODO: remove the event from the upcoming event page
-                Toast.makeText(activity, "Event quit successfully!", Toast.LENGTH_LONG).show()
-
-                it.findNavController()
-                    .navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
+                quitEvent(currentPlayers)
             } else if ((binding.updateQuitBtn.text as String).equals(
                     "JOIN",
                     true
                 )
             ) {
                 // join an event
-                val userID = auth.currentUser?.uid
-                userID?.let { it ->
-                    database.child("users").child(it).get().addOnSuccessListener {
+                joinEvent()
+                Toast.makeText(
+                    activity,
+                    "Event Joined\nNew event added tp the future event list!",
+                    Toast.LENGTH_LONG
+                ).show()
 
-                        //create User object for save
-                        val owner = UserData(
-                            it.child("phoneNumber").value.toString(),
-                            it.child("firstName").value.toString(),
-                            it.child("lastName").value.toString(),
-                            it.child("dob").value.toString(),
-                            auth.currentUser?.uid
-                        )
-
-                        //add current user to the participants
-                        database.child("participants").child(eventID).child(userID).setValue(owner)
-                        Toast.makeText(
-                            activity,
-                            "Event Joined\nNew event added tp the future event list!",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        // TODO: add the event to the upcoming event page
-                    }
-                }
-                // go back to the home page
-                it.findNavController()
-                    .navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
             } else {
                 Log.e("SummaryFrag", "Update/Join/Quit button")
             }
@@ -258,4 +233,59 @@ class SummaryFragment : Fragment() {
                 }
             })
     }
+
+    private fun joinEvent() {
+        database.child("events/${eventID}")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        var currentPlayers: Long = snapshot.child("currentPlayer").value as Long
+                        var maxPlayers: Long = snapshot.child("capacity").value as Long
+
+                        if (maxPlayers >= currentPlayers + 1) {
+                            currentPlayers += 1
+
+                            snapshot.ref.child("currentPlayer").setValue(currentPlayers)
+
+                            database.child("participants/${eventID}/").child(auth.currentUser!!.uid)
+                                .setValue(true)
+
+                            // go back to the home page
+                            findNavController().navigate(R.id.action_QuitEvent_or_BackToHome_SummaryFragment_to_HomeFragment)
+                        } else {
+                            Toast.makeText(requireContext(), "Event is full!", Toast.LENGTH_SHORT)
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+    }
+
+    private fun quitEvent(currentCapacity: String) {
+        database.child("participants").child(eventID).child(auth.currentUser!!.uid)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.exists()) {
+                        snapshot.ref.removeValue()
+                        val newPlayerCount = currentCapacity.toInt() - 1
+                        database.child("events/${eventID}/currentPlayer").setValue(newPlayerCount)
+
+                        findNavController().popBackStack()
+                    }
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+    }
+
+
+
 }
