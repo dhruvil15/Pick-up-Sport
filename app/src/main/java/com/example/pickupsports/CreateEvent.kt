@@ -316,9 +316,7 @@ class CreateEvent : Fragment(), AdapterView.OnItemSelectedListener{
         val userID = auth.currentUser?.uid
 
         //get the event ID
-        if(eventID == null) {
             eventID = database.child("events").push().key.toString()
-        }
 
          userID?.let { it ->
             database.child("users").child(it).get().addOnSuccessListener {
