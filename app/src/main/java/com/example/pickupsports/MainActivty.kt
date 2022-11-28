@@ -33,8 +33,11 @@ class MainActivty : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
+        // Getting the bottomNavigation
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
+        //Depending on the fragment the user is, display or hide the navigation bar
+        //Hide is on the login and the register page and display it for the rest
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.loginFragment-> {
@@ -48,12 +51,15 @@ class MainActivty : AppCompatActivity() {
                 }
             }
         }
+        //call the Navigation change function
         changeFragmentOnSelect()
     }
 
     fun changeFragmentOnSelect(){
         val bundle = Bundle()
         bundle.putString("mode", "create")
+
+        //Depending on which option is selected on the bottom nav, navigate it respective fragment
         binding.bottomNavigationView.setOnItemSelectedListener {
 
             when(it.itemId){

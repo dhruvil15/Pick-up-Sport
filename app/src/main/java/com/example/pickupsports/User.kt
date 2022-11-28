@@ -1,5 +1,6 @@
 package com.example.pickupsports
 
+// This is what the user's object is, once received form the db
 class User {
     var firstName: String? = null
     var lastName: String? = null

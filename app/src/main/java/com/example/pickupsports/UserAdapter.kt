@@ -21,10 +21,12 @@ class UserAdapter(private val userList: ArrayList<User>):
         return UserViewHolder(view)
     }
 
+    //bind the view and fetch the user's firstName and the uid and also pass it to the ChatActivity
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val currUser = userList[position]
         holder.txtName.text = currUser.firstName
 
+        //Once the user clicks on the user which they want to chat, it will fetch firstName and the uid accordingly
         holder.itemView.setOnClickListener{
             val intent = Intent(it.context,ChatActivity::class.java)
             intent.putExtra("name",currUser.firstName)

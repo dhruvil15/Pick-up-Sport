@@ -10,9 +10,9 @@
 
 ## Authors
 
-- [Dhruvil Trivedi](dh461268@.ca)
+- Dhruvil Trivedi - dh461268@.ca
 
-- [Ted Graveson](td259870@dal.ca)
+- Ted Graveson - td259870@dal.ca
 
 - [Yiyun Gong](yy346225@dal.ca)
 
