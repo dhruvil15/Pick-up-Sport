@@ -28,7 +28,6 @@ class ProfileFragment : Fragment() {
     private lateinit var database: DatabaseReference
 
     private lateinit var emailTextView: TextView
-    private lateinit var passwordTextView: TextView
     private lateinit var phoneButton: TextView
     private lateinit var dob: TextView
     private lateinit var fullName: TextView
@@ -65,7 +64,7 @@ class ProfileFragment : Fragment() {
         phoneButton = binding.phoneNumber
         dob = binding.dateOfBirth
         fullName = binding.name
-        val loginButton = binding.editProfileBtn
+        val editButton = binding.editProfileBtn
         val logoutButton = binding.logoutBtn
         database.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -77,14 +76,14 @@ class ProfileFragment : Fragment() {
 
         })
 
-        loginButton.setOnClickListener {
+        editButton.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
         }
 
         // logout
         logoutButton.setOnClickListener {
-            findNavController().navigate(R.id.action_ProfileFragment_to_loginFragment)
             auth.signOut()
+            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
             Toast.makeText(activity, "You are Logged Out!", Toast.LENGTH_LONG).show()
         }
 
