@@ -1,51 +1,40 @@
-Name
--------------
-Pickup Sports APP
+# UGRAD TEAM 2
 
-Description
----------------
-This APP provides  a  platform  to  connect  people  seeking  additional  participants  for  a  variety  of casual sporting activities. The registered users can post their sport acticities and join others' activities. In the home page, users can view all the current posted activies. By clicking the activity, the creator can edit & update the activity, the participants of the activity can exit while others can select to join this events. If users create or join the activity, the upcoming acitvities can be viewd in the 'upcoming' page. The 'plus' button in the middle of the bottom navigation bar let user to post new activities.
+- _Date Created_: 10 November, 2022
 
-Visuals
------------
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+- _Last Modification Date_: 27 November, 2022
 
-Installation
--------------
-The is the rouce code for the APP, user can run it in the Android Studio Emulator & debugging mode of the physical devices.
+## Professor
 
-Usage
-----------------------------
-- Navigation var on the bottom:
-go to the correspongding page by clicking the name on the bar
+[Juliano Franz](juliano.franz@dal.ca)
 
-- HOME Page:
-    view the all posted activites. 
-    - After clicking the activty card:
-        - If you are creator: you can click UPDATE button to update
-        - if you are participants: you can click QUIT button to quit this activity
-        - if you are not creator nor participant: you can click JOIN button to join the activity
-        - Anyone can click BACK button to back to HOME page
+## Authors
 
-- PLUS page:
-post the new activites by filling the form & click CREATE button
-Anyone can click BACK button to back to HOME page
+- [Dhruvil Trivedi](dh461268@.ca)
 
-- UPCOMING page:
-View the current user's upcoming activites
+- [Ted Graveson](td259870@dal.ca)
 
-- PROFILE page:
-information of the user
-User can log out by clicking LOG OUT button
+- [Yiyun Gong](yy346225@dal.ca)
 
-- CHAT page:
-chat with other users
+- [Dhairya Raval](dh715291@dal.ca)
 
-Authors and acknowledgment
------------------------------
-Ted Graveson(BCS)-B00878725
-Yiyun Gong(BCS)-B00831531
-Dhairy Raval(BCS)-B00845519
-Dhruvil Trivedi(BCS)-B00839059
-Yuxuan Wang(BCS)-B00880845
-Bryce Wiedemann(BACS)-B00828649
+- [Yuxuan Wang](yx703587@dal.ca)
+
+- [Bryce Wiedemann](bwiedemann@dal.ca)
+
+
+## Description
+- Sport  is  a  great  outlet  for  many  people  to  be  regularly  active  and  create  lasting  social connections. It can get people working together and push them to constantly work on improving themselves  both  physically  and  mentally.  However,  it  can  often  be  difficult  for  some  to regularly  participate  in  sporting activities.Many  sports  require  the  coordination  of  multiple participants, the appropriate equipment,and facilities, and in some cases a similar ability among players for an enjoyable experience.  Managing all these aspects just to begin playing can be overwhelming, and as a result,many people are unable to play sports as a regular part of their schedule. 
+
+- We  propose  that  an  application  tohelp  eliminate  the  hassle  of  organizing  casual  sporting activitieswould be an immediately impactful tool for a large variety of people. By providing a space to hostand navigate pick-up sporting events, this application would allow users to easily find players of a similar skill level to join them in whatever sport they are interested in playing. This would be accompanied by features that promote the discovery of events happening locally for each user, and those that help build communities of inclusive and communicative players.
+
+## Acknowledgments and References
+
+**Title:** Bottom Navigation Bar
+**Date:** November 12, 2022  
+**Link:** https://www.youtube.com/watch?v=YlIHxIAoHzU
+
+**Title:** Creating Chat Feature
+**Date:** November 20, 2022  
+**Link:** https://www.youtube.com/watch?v=8Pv96bvBJL4
+
