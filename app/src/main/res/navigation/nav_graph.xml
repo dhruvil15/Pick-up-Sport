@@ -114,9 +114,19 @@
         android:name="com.example.pickupsports.Message"
         android:label="fragment_message"
         tools:layout="@layout/fragment_message" />
+
     <fragment
         android:id="@+id/UpcomingFragment"
         android:name="com.example.pickupsports.upcoming"
         android:label="fragment_upcoming"
-        tools:layout="@layout/fragment_upcoming" />
+        tools:layout="@layout/fragment_upcoming" >
+        <action
+            android:id="@+id/action_UpcomingFragment_to_chatActivity"
+            app:destination="@id/chatActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/chatActivity"
+        android:name="com.example.pickupsports.ChatActivity"
+        android:label="activity_chat"
+        tools:layout="@layout/activity_chat" />
 </navigation>
